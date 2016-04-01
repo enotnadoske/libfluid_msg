@@ -1517,9 +1517,9 @@ uint8_t* MultipartReplyTable::pack() {
 
 of_error MultipartReplyTable::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_request);
-    while (len) {
+    while (len > 0) {
         TableStats stat;
         stat.unpack(p);
         this->table_stats_.push_back(stat);
@@ -1629,9 +1629,9 @@ uint8_t* MultipartReplyPortStats::pack() {
 
 of_error MultipartReplyPortStats::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_request);
-    while (len) {
+    while (len > 0) {
         of13::PortStats stat;
         stat.unpack(p);
         this->port_stats_.push_back(stat);
@@ -1739,7 +1739,7 @@ uint8_t* MultipartReplyQueue::pack() {
 
 of_error MultipartReplyQueue::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    int len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len > 0) {
         of13::QueueStats stat;
@@ -1846,9 +1846,9 @@ uint8_t* MultipartReplyGroup::pack() {
 
 of_error MultipartReplyGroup::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
-    while (len) {
+    while (len > 0) {
         of13::GroupStats stat;
         stat.unpack(p);
         this->group_stats_.push_back(stat);
@@ -1935,9 +1935,9 @@ uint8_t* MultipartReplyGroupDesc::pack() {
 
 of_error MultipartReplyGroupDesc::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
-    while (len) {
+    while (len > 0) {
         of13::GroupDesc desc;
         desc.unpack(p);
         this->group_desc_.push_back(desc);
@@ -2104,9 +2104,9 @@ uint8_t* MultipartReplyMeter::pack() {
 
 of_error MultipartReplyMeter::unpack(uint8_t *buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
+    int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
     uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
-    while (len) {
+    while (len > 0) {
         of13::MeterStats stat;
         stat.unpack(p);
         this->meter_stats_.push_back(stat);
