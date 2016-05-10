@@ -717,7 +717,7 @@ public:
     void table_id(uint8_t table_id) {
         this->table_id_ = table_id;
     }
-    void out_port(uint16_t out_port) {
+    void out_port(uint32_t out_port) {
         this->out_port_ = out_port;
     }
     void out_group(uint32_t out_group) {
