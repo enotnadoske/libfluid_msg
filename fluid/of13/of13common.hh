@@ -252,6 +252,9 @@ public:
     OXMTLV * get_oxm_field(uint8_t field);
     void instructions(InstructionSet instructions);
     void add_instruction(Instruction* inst);
+    InstructionSet instructions() {
+        return this->instructions_;
+    }
 };
 
 class TableStats: public TableStatsCommon {
