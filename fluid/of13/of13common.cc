@@ -280,8 +280,8 @@ of_error PacketQueue::unpack(uint8_t* buffer) {
 Bucket::Bucket()
     : length_(sizeof(struct of13::ofp_bucket)),
       weight_(0),
-      watch_port_(0),
-      watch_group_(0) {
+      watch_port_(of13::OFPP_ANY),
+      watch_group_(of13::OFPG_ANY) {
 }
 
 Bucket::Bucket(uint16_t weight, uint32_t watch_port, uint32_t watch_group) {

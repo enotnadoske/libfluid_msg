@@ -519,8 +519,8 @@ FlowMod::FlowMod()
       command_(0),
       cookie_mask_(0),
       table_id_(0),
-      out_port_(0),
-      out_group_(0) {
+      out_port_(of13::OFPP_ANY),
+      out_group_(of13::OFPG_ANY) {
 }
 
 FlowMod::FlowMod(uint32_t xid, uint64_t cookie, uint64_t cookie_mask,

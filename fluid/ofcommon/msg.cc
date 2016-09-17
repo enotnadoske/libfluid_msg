@@ -255,7 +255,7 @@ FlowModCommon::FlowModCommon(uint8_t version, uint8_t type)
       idle_timeout_(0),
       hard_timeout_(0),
       priority_(0),
-      buffer_id_(0),
+      buffer_id_(0xffffffff),
       flags_(0) {
 }
 
@@ -289,7 +289,7 @@ PacketOutCommon::PacketOutCommon(uint8_t version, uint8_t type)
     : OFMsg(version, type),
       data_(NULL),
       data_len_(0),
-      buffer_id_(0),
+      buffer_id_(0xffffffff),
       actions_len_(0) {
 }
 
@@ -349,7 +349,7 @@ PacketInCommon::PacketInCommon(uint8_t version, uint8_t type)
     : OFMsg(version, type),
       data_(NULL),
       data_len_(0),
-      buffer_id_(0),
+      buffer_id_(0xffffffff),
       total_len_(0),
       reason_(0) {
 }
