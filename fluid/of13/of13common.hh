@@ -407,6 +407,9 @@ public:
     uint32_t duration_nsec() {
         return this->duration_nsec_;
     }
+    std::vector<BucketStats> bucket_stats(){
+        return this->bucket_stats_;
+    }
     void group_id(uint32_t group_id) {
         this->group_id_ = group_id;
     }
