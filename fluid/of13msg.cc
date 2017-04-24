@@ -417,6 +417,7 @@ of_error PacketOut::unpack(uint8_t *buffer) {
     this->actions_len_ = ntoh16(po->actions_len);
     size_t len = this->actions_len_;
     uint8_t * p = buffer + sizeof(struct of13::ofp_packet_out);
+    this->actions_.length(len);
     this->actions_.unpack13(p);
     len = this->length_
         - (sizeof(struct of13::ofp_packet_out) + this->actions_len_);
