@@ -5,7 +5,7 @@ namespace fluid_msg {
 namespace of13 {
 
 OutputAction::OutputAction()
-    : set_order_(230),
+    : set_order_(23000),
       Action(of13::OFPAT_OUTPUT, sizeof(struct of13::ofp_action_output)) {
 }
 
@@ -21,7 +21,7 @@ bool OutputAction::equals(const Action &other) {
 }
 
 OutputAction::OutputAction(uint32_t port, uint16_t max_len)
-    : set_order_(230),
+    : set_order_(23000),
       Action(of13::OFPAT_OUTPUT, sizeof(struct of13::ofp_action_output)) {
     this->port_ = port;
     this->max_len_ = max_len;
@@ -47,7 +47,7 @@ of_error OutputAction::unpack(uint8_t *buffer) {
 }
 
 CopyTTLInAction::CopyTTLInAction()
-    : set_order_(10),
+    : set_order_(1000),
       Action(of13::OFPAT_COPY_TTL_IN, sizeof(struct ofp_action_header)) {
 }
 
@@ -64,7 +64,7 @@ of_error CopyTTLInAction::unpack(uint8_t *buffer) {
 }
 
 CopyTTLOutAction::CopyTTLOutAction()
-    : set_order_(110),
+    : set_order_(11000),
       Action(of13::OFPAT_COPY_TTL_OUT, sizeof(struct ofp_action_header)) {
 }
 
@@ -81,12 +81,12 @@ of_error CopyTTLOutAction::unpack(uint8_t *buffer) {
 }
 
 SetMPLSTTLAction::SetMPLSTTLAction()
-    : set_order_(140),
+    : set_order_(14000),
       Action(of13::OFPAT_SET_MPLS_TTL, sizeof(struct of13::ofp_action_mpls_ttl)) {
 }
 
 SetMPLSTTLAction::SetMPLSTTLAction(uint8_t mpls_ttl)
-    : set_order_(140),
+    : set_order_(14000),
       Action(of13::OFPAT_SET_MPLS_TTL, sizeof(struct of13::ofp_action_mpls_ttl)) {
     this->mpls_ttl_ = mpls_ttl;
 }
@@ -120,7 +120,7 @@ of_error SetMPLSTTLAction::unpack(uint8_t *buffer) {
 }
 
 DecMPLSTTLAction::DecMPLSTTLAction()
-    : set_order_(120),
+    : set_order_(12000),
       Action(of13::OFPAT_DEC_MPLS_TTL, sizeof(struct ofp_action_header)) {
 }
 
@@ -137,12 +137,12 @@ of_error DecMPLSTTLAction::unpack(uint8_t *buffer) {
 }
 
 PushVLANAction::PushVLANAction()
-    : set_order_(100),
+    : set_order_(10000),
       Action(of13::OFPAT_PUSH_VLAN, sizeof(struct of13::ofp_action_push)) {
 }
 
 PushVLANAction::PushVLANAction(uint16_t ethertype)
-    : set_order_(100),
+    : set_order_(10000),
       Action(of13::OFPAT_PUSH_VLAN, sizeof(struct of13::ofp_action_push)) {
     this->ethertype_ = ethertype;
 }
@@ -174,7 +174,7 @@ of_error PushVLANAction::unpack(uint8_t *buffer) {
 }
 
 PopVLANAction::PopVLANAction()
-    : set_order_(30),
+    : set_order_(3000),
       Action(of13::OFPAT_POP_VLAN, sizeof(struct ofp_action_header)) {
 }
 
@@ -191,12 +191,12 @@ of_error PopVLANAction::unpack(uint8_t *buffer) {
 }
 
 PushMPLSAction::PushMPLSAction()
-    : set_order_(80),
+    : set_order_(8000),
       Action(of13::OFPAT_PUSH_MPLS, sizeof(struct ofp_action_header)) {
 }
 
 PushMPLSAction::PushMPLSAction(uint16_t ethertype)
-    : set_order_(80),
+    : set_order_(8000),
       Action(of13::OFPAT_PUSH_MPLS, sizeof(struct ofp_action_header)) {
     this->ethertype_ = ethertype;
 }
@@ -228,12 +228,12 @@ of_error PushMPLSAction::unpack(uint8_t *buffer) {
 }
 
 PopMPLSAction::PopMPLSAction()
-    : set_order_(40),
+    : set_order_(4000),
       Action(of13::OFPAT_POP_MPLS, sizeof(struct of13::ofp_action_pop_mpls)) {
 }
 
 PopMPLSAction::PopMPLSAction(uint16_t ethertype)
-    : set_order_(40),
+    : set_order_(4000),
       Action(of13::OFPAT_POP_MPLS, sizeof(struct of13::ofp_action_pop_mpls)) {
     this->ethertype_ = ethertype;
 }
@@ -266,12 +266,12 @@ of_error PopMPLSAction::unpack(uint8_t *buffer) {
 }
 
 SetQueueAction::SetQueueAction()
-    : set_order_(170),
+    : set_order_(17000),
       Action(of13::OFPAT_SET_QUEUE, sizeof(struct of13::ofp_action_set_queue)) {
 }
 
 SetQueueAction::SetQueueAction(uint32_t queue_id)
-    : set_order_(170),
+    : set_order_(17000),
       Action(of13::OFPAT_SET_QUEUE, sizeof(struct of13::ofp_action_set_queue)) {
     this->queue_id_ = queue_id;
 }
@@ -304,12 +304,12 @@ of_error SetQueueAction::unpack(uint8_t *buffer) {
 }
 
 GroupAction::GroupAction()
-    : set_order_(220),
+    : set_order_(22000),
       Action(of13::OFPAT_GROUP, sizeof(struct of13::ofp_action_group)) {
 }
 
 GroupAction::GroupAction(uint32_t group_id)
-    : set_order_(220),
+    : set_order_(22000),
       Action(of13::OFPAT_GROUP, sizeof(struct of13::ofp_action_group)) {
     this->group_id_ = group_id;
 }
@@ -339,12 +339,12 @@ of_error GroupAction::unpack(uint8_t *buffer) {
 }
 
 SetNWTTLAction::SetNWTTLAction()
-    : set_order_(150),
+    : set_order_(15000),
       Action(of13::OFPAT_SET_NW_TTL, sizeof(struct of13::ofp_action_nw_ttl)) {
 }
 
 SetNWTTLAction::SetNWTTLAction(uint8_t nw_ttl)
-    : set_order_(150),
+    : set_order_(15000),
       Action(of13::OFPAT_SET_NW_TTL, sizeof(struct of13::ofp_action_nw_ttl)) {
     this->nw_ttl_ = nw_ttl;
 }
@@ -378,7 +378,7 @@ of_error SetNWTTLAction::unpack(uint8_t *buffer) {
 }
 
 DecNWTTLAction::DecNWTTLAction()
-    : set_order_(130),
+    : set_order_(13000),
       Action(of13::OFPAT_DEC_NW_TTL, sizeof(struct ofp_action_header)) {
 }
 
@@ -395,19 +395,19 @@ of_error DecNWTTLAction::unpack(uint8_t *buffer) {
 }
 
 SetFieldAction::SetFieldAction()
-    : set_order_(160),
+    : set_order_(16000),
       Action(of13::OFPAT_SET_FIELD, sizeof(struct of13::ofp_action_set_field)) {
 
 }
 
 SetFieldAction::SetFieldAction(OXMTLV* field)
-    : set_order_(160),
+    : set_order_(16000),
       Action(of13::OFPAT_SET_FIELD, sizeof(struct of13::ofp_action_set_field)) {
     this->field(field);
 }
 
 SetFieldAction::SetFieldAction(const SetFieldAction &other)
-    : set_order_(160) {
+    : set_order_(16000) {
     this->type_ = other.type_;
     this->length_ = other.length_;
     this->field_ = other.field_->clone();
@@ -416,6 +416,7 @@ SetFieldAction::SetFieldAction(const SetFieldAction &other)
 void SetFieldAction::field(OXMTLV* field) {
     this->field_ = field;
     this->length_ += ROUND_UP(field->length(), 8);
+    this->set_order_ = 16000 + field->field();
 }
 
 SetFieldAction::~SetFieldAction() {
@@ -472,12 +473,12 @@ of_error SetFieldAction::unpack(uint8_t *buffer) {
 }
 
 PushPBBAction::PushPBBAction()
-    : set_order_(90),
+    : set_order_(9000),
       Action(of13::OFPAT_PUSH_PBB, sizeof(struct of13::ofp_action_push)) {
 }
 
 PushPBBAction::PushPBBAction(uint16_t ethertype)
-    : set_order_(90),
+    : set_order_(9000),
       Action(of13::OFPAT_PUSH_PBB, sizeof(struct of13::ofp_action_push)) {
     this->ethertype_ = ethertype;
 }
@@ -508,7 +509,7 @@ of_error PushPBBAction::unpack(uint8_t *buffer) {
 }
 
 PopPBBAction::PopPBBAction()
-    : set_order_(50),
+    : set_order_(5000),
       Action(of13::OFPAT_POP_PBB, sizeof(struct of13::ofp_action_push)) {
 }
 

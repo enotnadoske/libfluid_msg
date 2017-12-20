@@ -312,7 +312,7 @@ public:
 class SetFieldAction: public Action {
 private:
     OXMTLV* field_;
-    const uint16_t set_order_;
+    uint16_t set_order_;
 public:
     SetFieldAction();
     SetFieldAction(OXMTLV* field);
