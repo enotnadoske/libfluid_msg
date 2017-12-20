@@ -406,11 +406,13 @@ SetFieldAction::SetFieldAction(OXMTLV* field)
     this->field(field);
 }
 
+
 SetFieldAction::SetFieldAction(const SetFieldAction &other)
     : set_order_(16000) {
     this->type_ = other.type_;
     this->length_ = other.length_;
     this->field_ = other.field_->clone();
+    this->set_order_ = 16000 + field_->field();
 }
 
 void SetFieldAction::field(OXMTLV* field) {
