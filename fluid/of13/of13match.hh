@@ -26,7 +26,7 @@ public:
     bool operator==(const MatchHeader &other) const;
     bool operator!=(const MatchHeader &other) const;
     virtual size_t pack(uint8_t *buffer);
-    virtual of_error unpack(uint8_t *buffer);
+    virtual of_error unpack(const uint8_t *buffer);
     uint16_t type() {
         return this->type_;
     }
@@ -69,7 +69,7 @@ public:
         return new OXMTLV(*this);
     }
     virtual size_t pack(uint8_t *buffer);
-    virtual of_error unpack(uint8_t *buffer);
+    virtual of_error unpack(const uint8_t *buffer);
     uint16_t class_() const {
         return this->class__;
     }
@@ -79,7 +79,7 @@ public:
     bool has_mask() const {
         return this->has_mask_;
     }
-    uint8_t length() {
+    uint8_t length() const {
         return this->length_;
     }
     struct oxm_req oxm_reqs() const {
@@ -112,15 +112,14 @@ private:
 public:
     InPort();
     InPort(uint32_t value);
-    ~InPort() {
-    }
+    ~InPort() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual InPort* clone() const {
         return new InPort(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint32_t value() const {
         return this->value_;
     }
@@ -135,15 +134,14 @@ private:
 public:
     InPhyPort();
     InPhyPort(uint32_t value);
-    ~InPhyPort() {
-    }
+    ~InPhyPort() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual InPhyPort* clone() const {
         return new InPhyPort(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint32_t value() const {
         return this->value_;
     }
@@ -160,15 +158,14 @@ public:
     Metadata();
     Metadata(uint64_t value);
     Metadata(uint64_t value, uint64_t mask);
-    ~Metadata() {
-    }
+    ~Metadata() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual Metadata* clone() const {
         return new Metadata(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint64_t value() const {
         return this->value_;
     }
@@ -191,19 +188,18 @@ public:
     EthDst();
     EthDst(EthAddress value);
     EthDst(EthAddress value, EthAddress mask);
-    ~EthDst() {
-    }
+    ~EthDst() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthDst* clone() const {
         return new EthDst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    EthAddress value() const {
+    of_error unpack(const uint8_t *buffer);
+    const EthAddress& value() const {
         return this->value_;
     }
-    EthAddress mask() const {
+    const EthAddress& mask() const {
         return this->mask_;
     }
     void value(EthAddress value) {
@@ -222,19 +218,18 @@ public:
     EthSrc();
     EthSrc(EthAddress value);
     EthSrc(EthAddress value, EthAddress mask);
-    ~EthSrc() {
-    }
+    ~EthSrc() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthSrc* clone() const {
         return new EthSrc(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    EthAddress value() const {
+    of_error unpack(const uint8_t *buffer);
+    const EthAddress& value() const {
         return this->value_;
     }
-    EthAddress mask() const {
+    const EthAddress& mask() const {
         return this->mask_;
     }
     void value(EthAddress value) {
@@ -251,15 +246,14 @@ private:
 public:
     EthType();
     EthType(uint16_t value);
-    ~EthType() {
-    }
+    ~EthType() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthType* clone() const {
         return new EthType(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -276,15 +270,14 @@ public:
     VLANVid();
     VLANVid(uint16_t value);
     VLANVid(uint16_t value, uint16_t mask);
-    ~VLANVid() {
-    }
+    ~VLANVid() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual VLANVid* clone() const {
         return new VLANVid(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -305,15 +298,14 @@ private:
 public:
     VLANPcp();
     VLANPcp(uint8_t value);
-    ~VLANPcp() {
-    }
+    ~VLANPcp() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual VLANPcp* clone() const {
         return new VLANPcp(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -328,15 +320,14 @@ private:
 public:
     IPDSCP();
     IPDSCP(uint8_t value);
-    ~IPDSCP() {
-    }
+    ~IPDSCP() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPDSCP* clone() const {
         return new IPDSCP(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -351,15 +342,14 @@ private:
 public:
     IPECN();
     IPECN(uint8_t value);
-    ~IPECN() {
-    }
+    ~IPECN() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPECN* clone() const {
         return new IPECN(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -374,15 +364,14 @@ private:
 public:
     IPProto();
     IPProto(uint8_t value);
-    ~IPProto() {
-    }
+    ~IPProto() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPProto* clone() const {
         return new IPProto(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -399,19 +388,18 @@ public:
     IPv4Src();
     IPv4Src(IPAddress value);
     IPv4Src(IPAddress value, IPAddress mask);
-    ~IPv4Src() {
-    }
-    virtual bool equals(const OXMTLV & other);
+    ~IPv4Src() {}
+    virtual bool equals(const OXMTLV& other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv4Src* clone() const {
         return new IPv4Src(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    IPAddress value() const {
+    of_error unpack(const uint8_t *buffer);
+    const IPAddress& value() const {
         return this->value_;
     }
-    IPAddress mask() const {
+    const IPAddress& mask() const {
         return this->mask_;
     }
     void value(uint32_t value) {
@@ -430,19 +418,18 @@ public:
     IPv4Dst();
     IPv4Dst(IPAddress value);
     IPv4Dst(IPAddress value, IPAddress mask);
-    ~IPv4Dst() {
-    }
-    virtual bool equals(const OXMTLV & other);
+    ~IPv4Dst() {}
+    virtual bool equals(const OXMTLV& other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv4Dst* clone() const {
         return new IPv4Dst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    IPAddress value() const {
+    of_error unpack(const uint8_t *buffer);
+    const IPAddress& value() const {
         return this->value_;
     }
-    IPAddress mask() const {
+    const IPAddress& mask() const {
         return this->mask_;
     }
     void value(IPAddress value) {
@@ -459,15 +446,14 @@ private:
 public:
     TCPSrc();
     TCPSrc(uint16_t value);
-    ~TCPSrc() {
-    }
+    ~TCPSrc() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual TCPSrc* clone() const {
         return new TCPSrc(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -483,15 +469,14 @@ private:
 public:
     TCPDst();
     TCPDst(uint16_t value);
-    ~TCPDst() {
-    }
+    ~TCPDst() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual TCPDst* clone() const {
         return new TCPDst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -506,15 +491,14 @@ private:
 public:
     UDPSrc();
     UDPSrc(uint16_t value);
-    ~UDPSrc() {
-    }
+    ~UDPSrc() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual UDPSrc* clone() const {
         return new UDPSrc(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -529,15 +513,14 @@ private:
 public:
     UDPDst();
     UDPDst(uint16_t value);
-    ~UDPDst() {
-    }
+    ~UDPDst() {}
     virtual bool equals(const OXMTLV & other);
     OXMTLV& operator=(const OXMTLV& field);
     virtual UDPDst* clone() const {
         return new UDPDst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -560,7 +543,7 @@ public:
         return new SCTPSrc(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -584,7 +567,7 @@ public:
         return new SCTPDst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -607,7 +590,7 @@ public:
         return new ICMPv4Code(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -630,7 +613,7 @@ public:
         return new ICMPv4Type(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -653,7 +636,7 @@ public:
         return new ARPOp(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -678,7 +661,7 @@ public:
         return new ARPSPA(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     IPAddress value() const {
         return this->value_;
     }
@@ -710,7 +693,7 @@ public:
         return new ARPTPA(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     IPAddress value() const {
         return this->value_;
     }
@@ -741,7 +724,7 @@ public:
         return new ARPSHA(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     EthAddress value() const {
         return this->value_;
     }
@@ -769,7 +752,7 @@ public:
         return new ARPTHA(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     EthAddress value() const {
         return this->value_;
     }
@@ -798,7 +781,7 @@ public:
         return new IPv6Src(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     IPAddress value() const {
         return this->value_;
     }
@@ -829,7 +812,7 @@ public:
         return new IPv6Dst(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     IPAddress value() const {
         return this->value_;
     }
@@ -860,7 +843,7 @@ public:
         return new IPV6Flabel(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint32_t value() const {
         return this->value_;
     }
@@ -889,7 +872,7 @@ public:
         return new ICMPv6Type(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -912,7 +895,7 @@ public:
         return new ICMPv6Code(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -935,7 +918,7 @@ public:
         return new IPv6NDTarget(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     IPAddress value() const {
         return this->value_;
     }
@@ -958,7 +941,7 @@ public:
         return new IPv6NDSLL(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     EthAddress value() const {
         return this->value_;
     }
@@ -981,7 +964,7 @@ public:
         return new IPv6NDTLL(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     EthAddress value() const {
         return this->value_;
     }
@@ -1004,7 +987,7 @@ public:
         return new MPLSLabel(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint32_t value() const {
         return this->value_;
     }
@@ -1027,7 +1010,7 @@ public:
         return new MPLSTC(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -1050,7 +1033,7 @@ public:
         return new MPLSBOS(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint8_t value() const {
         return this->value_;
     }
@@ -1075,7 +1058,7 @@ public:
         return new PBBIsid(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint32_t value() const {
         return this->value_;
     }
@@ -1106,7 +1089,7 @@ public:
         return new TUNNELId(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint64_t value() const {
         return this->value_;
     }
@@ -1131,7 +1114,7 @@ public:
         return new IPv6Exthdr(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     uint16_t value() const {
         return this->value_;
     }
@@ -1161,7 +1144,7 @@ public:
     bool operator!=(const Match &other) const;
     static void swap(Match& first, Match& second);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t *buffer);
     OXMTLV *oxm_field(uint8_t field);
     bool check_pre_req(OXMTLV *tlv);
     bool check_dup(OXMTLV *tlv);

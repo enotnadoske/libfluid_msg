@@ -68,7 +68,7 @@ size_t QueueProperty::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error QueueProperty::unpack(uint8_t* buffer) {
+of_error QueueProperty::unpack(const uint8_t* buffer) {
     struct ofp_queue_prop_header *qp = (struct ofp_queue_prop_header*) buffer;
     this->property_ = ntoh16(qp->property);
     this->len_ = ntoh16(qp->len);
@@ -121,8 +121,8 @@ size_t QueuePropertyList::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error QueuePropertyList::unpack10(uint8_t* buffer) {
-    uint8_t *p = buffer;
+of_error QueuePropertyList::unpack10(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     QueueProperty *prop;
     while (len) {
@@ -136,8 +136,8 @@ of_error QueuePropertyList::unpack10(uint8_t* buffer) {
     return 0;
 }
 
-of_error QueuePropertyList::unpack13(uint8_t* buffer) {
-    uint8_t *p = buffer;
+of_error QueuePropertyList::unpack13(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     QueueProperty *prop;
     while (len) {
@@ -268,7 +268,7 @@ size_t SwitchDesc::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error SwitchDesc::unpack(uint8_t* buffer) {
+of_error SwitchDesc::unpack(const uint8_t* buffer) {
     struct ofp_desc *ds = (struct ofp_desc *) buffer;
     this->mfr_desc_ = std::string(ds->mfr_desc);
     this->hw_desc_ = std::string(ds->hw_desc);
@@ -389,7 +389,7 @@ size_t PortStatsCommon::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PortStatsCommon::unpack(uint8_t* buffer) {
+of_error PortStatsCommon::unpack(const uint8_t* buffer) {
     struct port_rx_tx_stats *rt = (struct port_rx_tx_stats *) buffer;
     struct port_err_stats *es = (struct port_err_stats *) (buffer
         + sizeof(struct port_rx_tx_stats));

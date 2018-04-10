@@ -77,8 +77,8 @@ size_t InstructionSet::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error InstructionSet::unpack(uint8_t* buffer) {
-    uint8_t *p = buffer;
+of_error InstructionSet::unpack(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     Instruction *inst;
     while (len) {
@@ -148,7 +148,7 @@ size_t Instruction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error Instruction::unpack(uint8_t* buffer) {
+of_error Instruction::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction *in = (struct of13::ofp_instruction *) buffer;
     this->type_ = ntoh16(in->type);
     this->length_ = ntoh16(in->len);
@@ -182,7 +182,7 @@ size_t GoToTable::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error GoToTable::unpack(uint8_t* buffer) {
+of_error GoToTable::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction_goto_table *go =
         (struct of13::ofp_instruction_goto_table *) buffer;
     Instruction::unpack(buffer);
@@ -219,7 +219,7 @@ size_t WriteMetadata::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error WriteMetadata::unpack(uint8_t* buffer) {
+of_error WriteMetadata::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction_write_metadata *wm =
         (struct of13::ofp_instruction_write_metadata *) buffer;
     Instruction::unpack(buffer);
@@ -272,9 +272,9 @@ size_t WriteActions::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error WriteActions::unpack(uint8_t* buffer) {
+of_error WriteActions::unpack(const uint8_t* buffer) {
     Instruction::unpack(buffer);
-    uint8_t* p = buffer + sizeof(struct of13::ofp_instruction_actions);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_instruction_actions);
     this->actions_.length(
         this->length_ - sizeof(struct of13::ofp_instruction_actions));
     this->actions_.unpack(p);
@@ -323,9 +323,9 @@ size_t ApplyActions::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error ApplyActions::unpack(uint8_t* buffer) {
+of_error ApplyActions::unpack(const uint8_t* buffer) {
     Instruction::unpack(buffer);
-    uint8_t* p = buffer + sizeof(struct of13::ofp_instruction_actions);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_instruction_actions);
     this->actions_.length(
         this->length_ - sizeof(struct of13::ofp_instruction_actions));
     this->actions_.unpack13(p);
@@ -339,7 +339,7 @@ size_t ClearActions::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error ClearActions::unpack(uint8_t* buffer) {
+of_error ClearActions::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction *ia = (struct of13::ofp_instruction*) buffer;
     Instruction::unpack(buffer);
     return 0;
@@ -371,7 +371,7 @@ size_t Meter::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error Meter::unpack(uint8_t* buffer) {
+of_error Meter::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction_meter *im =
         (struct of13::ofp_instruction_meter *) buffer;
     Instruction::unpack(buffer);
@@ -405,7 +405,7 @@ size_t InstructionExperimenter::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error InstructionExperimenter::unpack(uint8_t* buffer) {
+of_error InstructionExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_instruction_experimenter *ie =
         (struct of13::ofp_instruction_experimenter *) buffer;
     Instruction::unpack(buffer);

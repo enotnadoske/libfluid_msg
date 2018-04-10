@@ -448,7 +448,7 @@ bool SetFieldAction::equals(const Action &other) {
     }
 }
 
-OXMTLV* SetFieldAction::field() {
+const OXMTLV* SetFieldAction::field() const {
     return this->field_;
 }
 

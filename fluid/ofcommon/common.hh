@@ -97,7 +97,7 @@ public:
         return new QueueProperty(*this);
     }
     virtual size_t pack(uint8_t* buffer);
-    virtual of_error unpack(uint8_t* buffer);
+    virtual of_error unpack(const uint8_t* buffer);
     uint16_t property() {
         return this->property_;
     }
@@ -131,8 +131,8 @@ public:
     bool operator==(const QueuePropertyList &other) const;
     bool operator!=(const QueuePropertyList &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack10(uint8_t* buffer);
-    of_error unpack13(uint8_t* buffer);
+    of_error unpack10(const uint8_t* buffer);
+    of_error unpack13(const uint8_t* buffer);
     friend void swap(QueuePropertyList& first, QueuePropertyList& second);
     uint16_t length() {
         return this->length_;
@@ -187,7 +187,7 @@ public:
     bool operator==(const SwitchDesc &other) const;
     bool operator!=(const SwitchDesc &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     std::string mfr_desc() {
         return this->mfr_desc_;
     }
@@ -266,39 +266,37 @@ public:
         uint32_t duration_nsec, uint16_t priority, uint16_t idle_timeout,
         uint16_t hard_timeout, uint64_t cookie, uint64_t packet_count,
         uint64_t byte_count);
-    ~FlowStatsCommon() {
-    }
-    ;
+    ~FlowStatsCommon() {}
     bool operator==(const FlowStatsCommon &other) const;
     bool operator!=(const FlowStatsCommon &other) const;
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
-    uint8_t table_id() {
+    uint8_t table_id() const {
         return this->table_id_;
     }
-    uint32_t duration_sec() {
+    uint32_t duration_sec() const {
         return this->duration_sec_;
     }
-    uint32_t duration_nsec() {
+    uint32_t duration_nsec() const {
         return this->duration_nsec_;
     }
-    uint16_t priority() {
+    uint16_t priority() const {
         return this->priority_;
     }
-    uint16_t idle_timeout() {
+    uint16_t idle_timeout() const {
         return this->idle_timeout_;
     }
-    uint16_t hard_timeout() {
+    uint16_t hard_timeout() const {
         return this->hard_timeout_;
     }
-    uint64_t cookie() {
+    uint64_t cookie() const {
         return this->cookie_;
     }
-    uint64_t packet_count() {
+    uint64_t packet_count() const {
         return this->packet_count_;
     }
-    uint64_t byte_count() {
+    uint64_t byte_count() const {
         return this->byte_count_;
     }
     void table_id(uint8_t table_id) {
@@ -426,7 +424,7 @@ public:
     bool operator==(const PortStatsCommon &other) const;
     bool operator!=(const PortStatsCommon &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint64_t rx_packets() {
         return this->rx_tx_stats.rx_packets;
     }

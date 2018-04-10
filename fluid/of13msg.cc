@@ -148,11 +148,11 @@ uint8_t* Hello::pack() {
     return buffer;
 }
 
-of_error Hello::unpack(uint8_t* buffer) {
+of_error Hello::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     /*Unpack the Hello elements*/
     uint32_t len = this->length_ - sizeof(struct ofp_header);
-    uint8_t *p = buffer + sizeof(struct ofp_header);
+    const uint8_t* p = buffer + sizeof(struct ofp_header);
     while (len) {
         HelloElemVersionBitmap he;
         he.unpack(p);
@@ -171,7 +171,6 @@ void Hello::elements(std::list<HelloElemVersionBitmap> elements) {
 void Hello::add_element(HelloElemVersionBitmap element) {
     this->elements_.push_back(element);
     this->length_ += element.length();
-
 }
 
 uint32_t Hello::elements_len() {
@@ -267,7 +266,7 @@ uint8_t* FeaturesRequest::pack() {
     return buffer;
 }
 
-of_error FeaturesRequest::unpack(uint8_t *buffer) {
+of_error FeaturesRequest::unpack(const uint8_t *buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -341,7 +340,7 @@ uint8_t* GetConfigRequest::pack() {
     return buffer;
 }
 
-of_error GetConfigRequest::unpack(uint8_t *buffer) {
+of_error GetConfigRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -812,7 +811,7 @@ uint8_t* PortMod::pack() {
     return buffer;
 }
 
-of_error PortMod::unpack(uint8_t* buffer) {
+of_error PortMod::unpack(const uint8_t* buffer) {
     struct of13::ofp_port_mod *pm = (struct of13::ofp_port_mod *) buffer;
     if (pm->header.length < sizeof(struct of13::ofp_port_mod)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -2771,7 +2770,7 @@ uint8_t* BarrierRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error BarrierRequest::unpack(uint8_t *buffer) {
+of_error BarrierRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -2791,7 +2790,7 @@ uint8_t* BarrierReply::pack() {
     return OFMsg::pack();
 }
 
-of_error BarrierReply::unpack(uint8_t *buffer) {
+of_error BarrierReply::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     return 0;
 }
@@ -2826,7 +2825,7 @@ uint8_t* GetAsyncRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error GetAsyncRequest::unpack(uint8_t *buffer) {
+of_error GetAsyncRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);

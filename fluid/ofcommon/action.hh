@@ -15,27 +15,25 @@ protected:
 public:
     Action();
     Action(uint16_t type, uint16_t length);
-    virtual ~Action() {
-    }
-    ;
+    virtual ~Action() {}
     virtual size_t pack(uint8_t *buffer);
-    virtual of_error unpack(uint8_t *buffer);
+    virtual of_error unpack(const uint8_t* buffer);
     virtual bool equals(const Action & other);
     virtual bool operator==(const Action &other) const;
     virtual bool operator!=(const Action &other) const;
-    virtual Action* clone() {
+    virtual Action* clone() const {
         return new Action(*this);
     }
     virtual uint16_t set_order() const {
         return 0;
     }
     virtual uint16_t set_sub_order() const {
-	return 0;
+	    return 0;
     }
-    uint16_t type() {
+    uint16_t type() const {
         return this->type_;
     }
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
     void type(uint16_t type) {
@@ -58,28 +56,25 @@ private:
     uint16_t length_;
     std::list<Action*> action_list_;
 public:
-    ActionList()
-        : length_(0) {
-    }
-    ;
+    ActionList() : length_(0) {}
     ActionList(std::list<Action*> action_list);
-    ActionList(const ActionList &other);
-    bool operator==(const ActionList &other) const;
-    bool operator!=(const ActionList &other) const;
+    ActionList(const ActionList& other);
+    bool operator==(const ActionList& other) const;
+    bool operator!=(const ActionList& other) const;
     ActionList& operator=(ActionList other);
     ~ActionList();
-    size_t pack(uint8_t *buffer);
-    of_error unpack10(uint8_t *buffer);
-    of_error unpack13(uint8_t *buffer);
+    size_t pack(uint8_t* buffer);
+    of_error unpack10(const uint8_t* buffer);
+    of_error unpack13(const uint8_t* buffer);
     friend void swap(ActionList& first, ActionList& second);
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
-    std::list<Action*> action_list(){
+    const std::list<Action*>& action_list() const {
         return this->action_list_;
     }
-    void add_action(Action &action);
-    void add_action(Action *act);
+    void add_action(Action& action);
+    void add_action(Action* act);
     void length(uint16_t length) {
         this->length_ = length;
     }
@@ -87,9 +82,9 @@ public:
 
 struct comp_action_set_order {
     bool operator()(Action * lhs, Action* rhs) const {
-	if (lhs->set_order() == rhs->set_order()) {
-	    return lhs->set_sub_order() < rhs->set_sub_order();
-	}
+        if (lhs->set_order() == rhs->set_order()) {
+            return lhs->set_sub_order() < rhs->set_sub_order();
+        }
         return lhs->set_order() < rhs->set_order();
     }
 };
@@ -99,10 +94,7 @@ private:
     uint16_t length_;
     std::set<Action*, comp_action_set_order> action_set_;
 public:
-    ActionSet()
-        : length_(0) {
-    }
-    ;
+    ActionSet() : length_(0) {}
     ActionSet(std::set<Action*> action_set);
     ActionSet(const ActionSet &other);
     bool operator==(const ActionSet &other) const;
@@ -110,12 +102,12 @@ public:
     ActionSet& operator=(ActionSet other);
     ~ActionSet();
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     friend void swap(ActionSet& first, ActionSet& second);
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
-    std::set<Action*, comp_action_set_order> action_set(){
+    const std::set<Action*, comp_action_set_order>& action_set() {
         return this->action_set_;
     }
     bool add_action(Action &action);

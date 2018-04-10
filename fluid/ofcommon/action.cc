@@ -32,7 +32,7 @@ size_t Action::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error Action::unpack(uint8_t *buffer) {
+of_error Action::unpack(const uint8_t* buffer) {
     struct ofp_action_header *ac = (struct ofp_action_header *) buffer;
     this->type_ = ntoh16(ac->type);
     this->length_ = ntoh16(ac->len);
@@ -84,8 +84,8 @@ size_t ActionList::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ActionList::unpack10(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionList::unpack10(const uint8_t* buffer) {
+    const uint8_t* p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {
@@ -99,8 +99,8 @@ of_error ActionList::unpack10(uint8_t *buffer) {
     return 0;
 }
 
-of_error ActionList::unpack13(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionList::unpack13(const uint8_t* buffer) {
+    const uint8_t* p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {
@@ -186,8 +186,8 @@ size_t ActionSet::pack(uint8_t *buffer) {
 /*OpenFlow 1.0 doesn't have actions sets, so we do not
  * need to implement two unpack versions like we did for
  * the ActionList */
-of_error ActionSet::unpack(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionSet::unpack(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {

@@ -30,7 +30,7 @@ uint8_t* OFMsg::pack() {
     return buffer;
 }
 
-of_error OFMsg::unpack(uint8_t *buffer) {
+of_error OFMsg::unpack(const uint8_t* buffer) {
     struct ofp_header *oh = (struct ofp_header*) buffer;
     this->version_ = oh->version;
     this->type_ = oh->type;

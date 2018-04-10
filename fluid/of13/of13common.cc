@@ -54,14 +54,14 @@ size_t HelloElemVersionBitmap::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error HelloElemVersionBitmap::unpack(uint8_t* buffer) {
+of_error HelloElemVersionBitmap::unpack(const uint8_t* buffer) {
     struct of13::ofp_hello_elem_versionbitmap *elem =
         (struct of13::ofp_hello_elem_versionbitmap *) buffer;
     this->type_ = ntoh16(elem->type);
     this->length_ = ntoh16(elem->length);
     uint32_t bitmaps;
     memcpy(&bitmaps, elem->bitmaps, sizeof(uint32_t));
-    uint8_t *p = buffer + sizeof(struct of13::ofp_hello_elem_versionbitmap);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_hello_elem_versionbitmap);
     size_t len = this->length_
         - sizeof(struct of13::ofp_hello_elem_versionbitmap);
     while (len) {
@@ -122,7 +122,7 @@ size_t Port::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error Port::unpack(uint8_t* buffer) {
+of_error Port::unpack(const uint8_t* buffer) {
     struct of13::ofp_port *port = (struct of13::ofp_port*) buffer;
     this->port_no_ = ntoh32(port->port_no);
     this->hw_addr_ = EthAddress(port->hw_addr);
@@ -162,7 +162,7 @@ size_t QueuePropMinRate::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error QueuePropMinRate::unpack(uint8_t* buffer) {
+of_error QueuePropMinRate::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_prop_min_rate *qp =
         (struct of13::ofp_queue_prop_min_rate *) buffer;
     QueueProperty::unpack(buffer);
@@ -194,7 +194,7 @@ size_t QueuePropMaxRate::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error QueuePropMaxRate::unpack(uint8_t* buffer) {
+of_error QueuePropMaxRate::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_prop_min_rate *qp =
         (struct of13::ofp_queue_prop_min_rate *) buffer;
     QueueProperty::unpack(buffer);
@@ -217,7 +217,7 @@ size_t QueueExperimenter::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error QueueExperimenter::unpack(uint8_t* buffer) {
+of_error QueueExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_prop_experimenter *qp =
         (struct of13::ofp_queue_prop_experimenter *) buffer;
     QueueProperty::unpack(buffer);
@@ -265,12 +265,12 @@ size_t PacketQueue::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error PacketQueue::unpack(uint8_t* buffer) {
+of_error PacketQueue::unpack(const uint8_t* buffer) {
     struct of13::ofp_packet_queue *pq = (struct of13::ofp_packet_queue*) buffer;
     this->queue_id_ = ntoh32(pq->queue_id);
     this->port_ = ntoh32(pq->port);
     this->len_ = ntoh16(pq->len);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_packet_queue);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_packet_queue);
     this->properties_.length(
         this->len_ - sizeof(struct of13::ofp_packet_queue));
     this->properties_.unpack13(p);
@@ -337,7 +337,7 @@ size_t Bucket::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error Bucket::unpack(uint8_t* buffer) {
+of_error Bucket::unpack(const uint8_t* buffer) {
     struct of13::ofp_bucket *b = (struct of13::ofp_bucket*) buffer;
     this->length_ = ntoh16(b->len);
     this->weight_ = ntoh16(b->weight);
@@ -409,7 +409,7 @@ size_t FlowStats::pack(uint8_t* buffer) {
     return this->length_;
 }
 
-of_error FlowStats::unpack(uint8_t* buffer) {
+of_error FlowStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_flow_stats *fs = (struct of13::ofp_flow_stats*) buffer;
     this->length_ = ntoh16(fs->length);
     this->table_id_ = fs->table_id;
@@ -422,7 +422,7 @@ of_error FlowStats::unpack(uint8_t* buffer) {
     this->cookie_ = ntoh64(fs->cookie);
     this->packet_count_ = ntoh64(fs->packet_count);
     this->byte_count_ = ntoh64(fs->byte_count);
-    uint8_t *p =
+    const uint8_t *p =
         buffer
             + (sizeof(struct of13::ofp_flow_stats)
                 - sizeof(struct of13::ofp_match));
@@ -477,7 +477,7 @@ size_t TableStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableStats::unpack(uint8_t* buffer) {
+of_error TableStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_table_stats *ts = (struct of13::ofp_table_stats*) buffer;
     this->table_id_ = ts->table_id;
     this->active_count_ = ntoh32(ts->active_count);
@@ -524,7 +524,7 @@ size_t PortStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PortStats::unpack(uint8_t* buffer) {
+of_error PortStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_port_stats *ps = (struct of13::ofp_port_stats*) buffer;
     this->port_no_ = ntoh32(ps->port_no);
     PortStatsCommon::unpack(buffer + 8);
@@ -573,7 +573,7 @@ size_t QueueStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error QueueStats::unpack(uint8_t* buffer) {
+of_error QueueStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_stats *qs = (struct of13::ofp_queue_stats*) buffer;
     this->port_no_ = ntoh32(qs->port_no);
     this->queue_id_ = ntoh32(qs->queue_id);
@@ -613,7 +613,7 @@ size_t BucketStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error BucketStats::unpack(uint8_t* buffer) {
+of_error BucketStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_bucket_counter *bc =
         (struct of13::ofp_bucket_counter *) buffer;
     this->packet_count_ = ntoh64(bc->packet_count);
@@ -680,7 +680,7 @@ size_t GroupStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error GroupStats::unpack(uint8_t* buffer) {
+of_error GroupStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_group_stats *gs = (struct of13::ofp_group_stats *) buffer;
     this->length_ = ntoh16(gs->length);
     this->group_id_ = ntoh32(gs->group_id);
@@ -689,7 +689,7 @@ of_error GroupStats::unpack(uint8_t* buffer) {
     this->byte_count_ = ntoh64(gs->byte_count);
     this->duration_sec_ = ntoh32(gs->duration_sec);
     this->duration_nsec_ = ntoh32(gs->duration_nsec);
-    uint8_t *p = buffer + sizeof(of13::ofp_group_stats);
+    const uint8_t *p = buffer + sizeof(of13::ofp_group_stats);
     size_t len = this->length_ - sizeof(of13::ofp_group_stats);
     while (len) {
         BucketStats stats;
@@ -751,14 +751,14 @@ size_t GroupDesc::pack(uint8_t* buffer) {
     return this->length_;
 }
 
-of_error GroupDesc::unpack(uint8_t* buffer) {
+of_error GroupDesc::unpack(const uint8_t* buffer) {
     struct of13::ofp_group_desc_stats * gd =
         (struct of13::ofp_group_desc_stats *) buffer;
     this->length_ = ntoh16(gd->length);
     this->type_ = gd->type;
     this->group_id_ = ntoh32(gd->group_id);
     size_t len = this->length_ - sizeof(struct of13::ofp_group_desc_stats);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_group_desc_stats);
+    const uint8_t *p = buffer + sizeof(struct of13::ofp_group_desc_stats);
     while (len) {
         Bucket bucket;
         bucket.unpack(p);
@@ -826,7 +826,7 @@ size_t GroupFeatures::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error GroupFeatures::unpack(uint8_t* buffer) {
+of_error GroupFeatures::unpack(const uint8_t* buffer) {
     struct of13::ofp_group_features *gf =
         (struct of13::ofp_group_features*) buffer;
     this->types_ = ntoh32(gf->types);
@@ -866,7 +866,7 @@ size_t TableFeatureProp::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeatureProp::unpack(uint8_t* buffer) {
+of_error TableFeatureProp::unpack(const uint8_t* buffer) {
     struct of13::ofp_table_feature_prop_header *fp =
         (struct of13::ofp_table_feature_prop_header*) buffer;
     this->type_ = ntoh16(fp->type);
@@ -907,9 +907,10 @@ size_t TableFeaturePropInstruction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeaturePropInstruction::unpack(uint8_t* buffer) {
+of_error TableFeaturePropInstruction::unpack(const uint8_t* buffer) {
     TableFeatureProp::unpack(buffer);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_table_feature_prop_header);
+    const uint8_t *p = buffer +
+        sizeof(struct of13::ofp_table_feature_prop_header);
     size_t len = this->length_
         - sizeof(struct of13::ofp_table_feature_prop_header);
     Instruction inst;
@@ -963,9 +964,10 @@ size_t TableFeaturePropNextTables::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeaturePropNextTables::unpack(uint8_t* buffer) {
+of_error TableFeaturePropNextTables::unpack(const uint8_t* buffer) {
     TableFeatureProp::unpack(buffer);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_table_feature_prop_header);
+    const uint8_t *p = buffer +
+        sizeof(struct of13::ofp_table_feature_prop_header);
     size_t len = this->length_
         - sizeof(struct of13::ofp_table_feature_prop_header);
     while (len) {
@@ -1015,9 +1017,10 @@ size_t TableFeaturePropActions::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeaturePropActions::unpack(uint8_t* buffer) {
+of_error TableFeaturePropActions::unpack(const uint8_t* buffer) {
     TableFeatureProp::unpack(buffer);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_table_feature_prop_header);
+    const uint8_t *p = buffer +
+        sizeof(struct of13::ofp_table_feature_prop_header);
     size_t len = this->length_
         - sizeof(struct of13::ofp_table_feature_prop_header);
     Action act;
@@ -1067,9 +1070,10 @@ size_t TableFeaturePropOXM::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeaturePropOXM::unpack(uint8_t* buffer) {
+of_error TableFeaturePropOXM::unpack(const uint8_t* buffer) {
     TableFeatureProp::unpack(buffer);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_table_feature_prop_header);
+    const uint8_t *p = buffer +
+        sizeof(struct of13::ofp_table_feature_prop_header);
     size_t len = this->length_
         - sizeof(struct of13::ofp_table_feature_prop_header);
     while (len) {
@@ -1117,7 +1121,7 @@ size_t TableFeaturePropExperimenter::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableFeaturePropExperimenter::unpack(uint8_t* buffer) {
+of_error TableFeaturePropExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_table_feature_prop_experimenter *pe =
         (struct of13::ofp_table_feature_prop_experimenter*) buffer;
     TableFeatureProp::unpack(buffer);
@@ -1175,8 +1179,8 @@ size_t TablePropertiesList::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TablePropertiesList::unpack(uint8_t* buffer) {
-    uint8_t *p = buffer;
+of_error TablePropertiesList::unpack(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     TableFeatureProp *prop;
     while (len) {
@@ -1265,7 +1269,7 @@ size_t TableFeatures::pack(uint8_t* buffer) {
     return length();
 }
 
-of_error TableFeatures::unpack(uint8_t* buffer) {
+of_error TableFeatures::unpack(const uint8_t* buffer) {
     struct of13::ofp_table_features *tf =
         (struct of13::ofp_table_features*) buffer;
     this->length_ = ntoh16(tf->length);
@@ -1275,7 +1279,7 @@ of_error TableFeatures::unpack(uint8_t* buffer) {
     this->metadata_write_ = ntoh64(tf->metadata_write);
     this->config_ = ntoh32(tf->config);
     this->max_entries_ = ntoh32(tf->max_entries);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_table_features);
+    const uint8_t *p = buffer + sizeof(struct of13::ofp_table_features);
     this->properties_.length(
         this->length_ - sizeof(struct of13::ofp_table_features));
     this->properties_.unpack(p);

@@ -26,25 +26,24 @@ public:
     OFMsg(uint8_t* buffer) {
         unpack(buffer);
     }
-    virtual ~OFMsg() {
-    }
+    virtual ~OFMsg() {}
     virtual uint8_t* pack();
-    virtual of_error unpack(uint8_t *buffer);
+    virtual of_error unpack(const uint8_t* buffer);
     bool operator==(const OFMsg &other) const;
     bool operator!=(const OFMsg &other) const;
-    uint8_t version() {
+    uint8_t version() const {
         return this->version_;
     }
-    uint8_t type() {
+    uint8_t type() const {
         return this->type_;
     }
     //Length is virtual because we need to override
     //it in some classes where the length is padding
     // dependent (e.g OpenFlow 1.3 Flow Mod).
-    virtual uint16_t length() {
+    virtual uint16_t length() const {
         return this->length_;
     }
-    uint32_t xid() {
+    uint32_t xid() const {
         return this->xid_;
     }
     void version(uint8_t version) {
@@ -147,20 +146,19 @@ public:
     FeaturesReplyCommon(uint8_t version, uint8_t type, uint32_t xid,
         uint64_t datapath_id, uint32_t n_buffers, uint8_t n_tables,
         uint32_t capabilities);
-    virtual ~FeaturesReplyCommon() {
-    }
+    virtual ~FeaturesReplyCommon() {}
     bool operator==(const FeaturesReplyCommon &other) const;
     bool operator!=(const FeaturesReplyCommon &other) const;
-    uint64_t datapath_id() {
+    uint64_t datapath_id() const {
         return this->datapath_id_;
     }
-    uint32_t n_buffers() {
+    uint32_t n_buffers() const {
         return this->n_buffers_;
     }
-    uint8_t n_tables() {
+    uint8_t n_tables() const {
         return this->n_tables_;
     }
-    uint32_t capabilities() {
+    uint32_t capabilities() const {
         return this->capabilities_;
     }
     void datapath_id(uint64_t datapath_id) {
@@ -225,27 +223,25 @@ public:
     FlowModCommon(uint8_t version, uint8_t type, uint32_t xid, uint64_t cookie,
         uint16_t idle_timeout, uint16_t hard_timeout,
         uint16_t priority, uint32_t buffer_id, uint16_t flags);
-    virtual ~FlowModCommon() {
-    }
-    ;
+    virtual ~FlowModCommon() {}
     bool operator==(const FlowModCommon &other) const;
     bool operator!=(const FlowModCommon &other) const;
-    uint64_t cookie() {
+    uint64_t cookie() const {
         return this->cookie_;
     }
-    uint16_t idle_timeout() {
+    uint16_t idle_timeout() const {
         return this->idle_timeout_;
     }
-    uint16_t hard_timeout() {
+    uint16_t hard_timeout() const {
         return this->hard_timeout_;
     }
-    uint16_t priority() {
+    uint16_t priority() const {
         return this->priority_;
     }
-    uint32_t buffer_id() {
+    uint32_t buffer_id() const {
         return this->buffer_id_;
     }
-    uint16_t flags() {
+    uint16_t flags() const {
         return this->flags_;
     }
     void cookie(uint64_t cookie) {
@@ -329,7 +325,7 @@ public:
     uint32_t buffer_id() const {
         return this->buffer_id_;
     }
-    uint16_t total_len() {
+    uint16_t total_len() const {
         return this->total_len_;
     }
     uint8_t reason() const {

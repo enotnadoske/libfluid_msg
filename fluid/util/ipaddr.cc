@@ -96,11 +96,11 @@ void IPAddress::setIPv6(uint8_t address[16]){
     memcpy(this->ipv6, address, 16);
 }
 
-uint32_t IPAddress::getIPv4(){
+uint32_t IPAddress::getIPv4() const {
     return this->ipv4;
 }
 
-uint8_t* IPAddress::getIPv6(){
+const uint8_t* IPAddress::getIPv6() const {
     return this->ipv6;
 }
 
