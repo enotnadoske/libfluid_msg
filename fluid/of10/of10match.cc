@@ -135,7 +135,7 @@ size_t Match::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error Match::unpack(uint8_t *buffer) {
+of_error Match::unpack(const uint8_t* buffer) {
     struct of10::ofp_match *m = (struct ofp_match*) buffer;
     this->wildcards_ = ntoh32(m->wildcards);
     this->in_port_ = ntoh16(m->in_port);

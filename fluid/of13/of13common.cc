@@ -422,10 +422,8 @@ of_error FlowStats::unpack(const uint8_t* buffer) {
     this->cookie_ = ntoh64(fs->cookie);
     this->packet_count_ = ntoh64(fs->packet_count);
     this->byte_count_ = ntoh64(fs->byte_count);
-    const uint8_t *p =
-        buffer
-            + (sizeof(struct of13::ofp_flow_stats)
-                - sizeof(struct of13::ofp_match));
+    const uint8_t *p = buffer
+        + (sizeof(struct of13::ofp_flow_stats) - sizeof(struct of13::ofp_match));
     this->match_.unpack(p);
     this->instructions_.length(
         this->length_

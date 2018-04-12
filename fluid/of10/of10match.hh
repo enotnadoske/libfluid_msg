@@ -36,7 +36,7 @@ public:
     bool operator==(const Match &other) const;
     bool operator!=(const Match &other) const;
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t wildcards() {
         return this->wildcards_;
     }

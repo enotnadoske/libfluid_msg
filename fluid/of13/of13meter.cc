@@ -35,7 +35,7 @@ size_t MeterBand::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error MeterBand::unpack(uint8_t* buffer) {
+of_error MeterBand::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_band_header *bh =
         (struct of13::ofp_meter_band_header *) buffer;
     this->type_ = hton16(bh->type);
@@ -105,8 +105,8 @@ size_t MeterBandList::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error MeterBandList::unpack(uint8_t* buffer) {
-    uint8_t *p = buffer;
+of_error MeterBandList::unpack(const uint8_t* buffer) {
+    const uint8_t* p = buffer;
     size_t len = this->length_;
     MeterBand *band;
     while (len) {
@@ -154,7 +154,7 @@ size_t MeterBandDrop::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error MeterBandDrop::unpack(uint8_t* buffer) {
+of_error MeterBandDrop::unpack(const uint8_t* buffer) {
     MeterBand::unpack(buffer);
     return 0;
 }
@@ -193,7 +193,7 @@ size_t MeterBandDSCPRemark::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error MeterBandDSCPRemark::unpack(uint8_t* buffer) {
+of_error MeterBandDSCPRemark::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_band_dscp_remark *bd =
         (struct of13::ofp_meter_band_dscp_remark*) buffer;
     MeterBand::unpack(buffer);
@@ -233,7 +233,7 @@ size_t MeterBandExperimenter::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error MeterBandExperimenter::unpack(uint8_t* buffer) {
+of_error MeterBandExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_band_experimenter *be =
         (struct of13::ofp_meter_band_experimenter*) buffer;
     MeterBand::unpack(buffer);
@@ -280,13 +280,13 @@ size_t MeterConfig::pack(uint8_t* buffer) {
     return this->length_;
 }
 
-of_error MeterConfig::unpack(uint8_t* buffer) {
+of_error MeterConfig::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_config *mc = (struct of13::ofp_meter_config *) buffer;
     this->length_ = ntoh16(mc->length);
     this->flags_ = ntoh16(mc->flags);
     this->meter_id_ = ntoh32(mc->meter_id);
     this->bands_.length(this->length_ - sizeof(struct of13::ofp_meter_config));
-    uint8_t *p = buffer + sizeof(struct of13::ofp_meter_config);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_meter_config);
     this->bands_.unpack(p);
     return 0;
 }
@@ -343,7 +343,7 @@ size_t MeterFeatures::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error MeterFeatures::unpack(uint8_t* buffer) {
+of_error MeterFeatures::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_features *mf =
         (struct of13::ofp_meter_features *) buffer;
     this->max_meter_ = ntoh32(mf->max_meter);
@@ -381,7 +381,7 @@ size_t BandStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error BandStats::unpack(uint8_t* buffer) {
+of_error BandStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_band_stats *mb =
         (struct of13::ofp_meter_band_stats *) buffer;
     this->packet_band_count_ = ntoh64(mb->packet_band_count);
@@ -456,7 +456,7 @@ size_t MeterStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error MeterStats::unpack(uint8_t* buffer) {
+of_error MeterStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_stats *ms = (struct of13::ofp_meter_stats*) buffer;
     this->meter_id_ = ntoh32(ms->meter_id);
     this->len_ = ntoh16(ms->len);
@@ -465,7 +465,7 @@ of_error MeterStats::unpack(uint8_t* buffer) {
     this->byte_in_count_ = ntoh64(ms->byte_in_count);
     this->duration_sec_ = ntoh32(ms->duration_sec);
     this->duration_nsec_ = ntoh32(ms->duration_nsec);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_meter_stats);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_meter_stats);
     size_t len = this->len_ - sizeof(struct of13::ofp_meter_stats);
     while (len) {
         BandStats stats;

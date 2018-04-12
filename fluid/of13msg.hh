@@ -24,7 +24,7 @@ public:
     bool operator==(const RoleCommon &other) const;
     bool operator!=(const RoleCommon &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t role() {
         return this->role_;
     }
@@ -59,7 +59,7 @@ public:
     bool operator==(const AsyncConfigCommon &other) const;
     bool operator!=(const AsyncConfigCommon &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     /*TODO check for specific message type */
     uint32_t master_equal_packet_in_mask() {
         return this->packet_in_mask_[0];
@@ -174,7 +174,7 @@ public:
     bool operator==(const Experimenter &other) const;
     bool operator!=(const Experimenter &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t experimenter() {
         return this->experimenter_;
     }
@@ -210,7 +210,7 @@ public:
     bool operator==(const FeaturesReply &other) const;
     bool operator!=(const FeaturesReply &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t auxiliary_id() {
         return this->auxiliary_id_;
     }
@@ -269,7 +269,7 @@ public:
     bool operator==(const PacketOut &other) const;
     bool operator!=(const PacketOut &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t in_port() {
         return this->in_port_;
     }
@@ -297,7 +297,7 @@ public:
     bool operator==(const PacketIn &other) const;
     bool operator!=(const PacketIn &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t table_id() const {
         return this->table_id_;
     }
@@ -344,7 +344,7 @@ public:
     bool operator==(const FlowMod &other) const;
     bool operator!=(const FlowMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual uint16_t length();
     uint8_t command() const {
         return this->command_;
@@ -414,7 +414,7 @@ public:
     bool operator==(const FlowRemoved &other) const;
     bool operator!=(const FlowRemoved &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t table_id() {
         return this->table_id_;
     }
@@ -448,7 +448,7 @@ public:
     bool operator==(const PortStatus &other) const;
     bool operator!=(const PortStatus &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of13::Port desc() {
         return this->desc_;
     }
@@ -498,7 +498,7 @@ public:
     bool operator==(const GroupMod &other) const;
     bool operator!=(const GroupMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t command() {
         return this->command_;
     }
@@ -539,7 +539,7 @@ public:
     bool operator==(const TableMod &other) const;
     bool operator!=(const TableMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t table_id() {
         return this->table_id_;
     }
@@ -570,7 +570,7 @@ public:
     bool operator==(const MultipartRequest &other) const;
     bool operator!=(const MultipartRequest &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t mpart_type() {
         return this->mpart_type_;
     }
@@ -601,7 +601,7 @@ public:
     bool operator==(const MultipartReply &other) const;
     bool operator!=(const MultipartReply &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t mpart_type() {
         return this->mpart_type_;
     }
@@ -625,7 +625,7 @@ public:
     MultipartRequestDesc(uint32_t xid, uint16_t flags);
     ~MultipartRequestDesc() {}
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -644,7 +644,7 @@ public:
     bool operator==(const MultipartReplyDesc &other) const;
     bool operator!=(const MultipartReplyDesc &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     SwitchDesc desc() {
         return this->desc_;
     }
@@ -676,7 +676,7 @@ public:
     bool operator==(const MultipartRequestFlow &other) const;
     bool operator!=(const MultipartRequestFlow &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of13::Match match() const {
         return this->match_;
     }
@@ -730,7 +730,7 @@ public:
     bool operator==(const MultipartReplyFlow &other) const;
     bool operator!=(const MultipartReplyFlow &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::FlowStats>& flow_stats() {
         return this->flow_stats_;
     }
@@ -762,7 +762,7 @@ public:
     bool operator==(const MultipartRequestAggregate &other) const;
     bool operator!=(const MultipartRequestAggregate &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of13::Match match() {
         return this->match_;
     }
@@ -817,7 +817,7 @@ public:
     bool operator==(const MultipartReplyAggregate &other) const;
     bool operator!=(const MultipartReplyAggregate &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint64_t packet_count() {
         return this->packet_count_;
     }
@@ -847,7 +847,7 @@ public:
     MultipartRequestTable(uint32_t xid, uint16_t flags);
     ~MultipartRequestTable() {}
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -865,7 +865,7 @@ public:
     bool operator==(const MultipartReplyTable &other) const;
     bool operator!=(const MultipartReplyTable &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::TableStats> table_stats() {
         return this->table_stats_;
     }
@@ -886,7 +886,7 @@ public:
     bool operator==(const MultipartRequestPortStats &other) const;
     bool operator!=(const MultipartRequestPortStats &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t port_no() const {
         return this->port_no_;
     }
@@ -911,7 +911,7 @@ public:
     bool operator==(const MultipartReplyPortStats &other) const;
     bool operator!=(const MultipartReplyPortStats &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::PortStats> port_stats() {
         return this->port_stats_;
     }
@@ -935,7 +935,7 @@ public:
     bool operator==(const MultipartRequestQueue &other) const;
     bool operator!=(const MultipartRequestQueue &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }
@@ -966,7 +966,7 @@ public:
     bool operator==(const MultipartReplyQueue &other) const;
     bool operator!=(const MultipartReplyQueue &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::QueueStats> queue_stats() {
         return this->queue_stats_;
     }
@@ -988,7 +988,7 @@ public:
     bool operator==(const MultipartRequestGroup &other) const;
     bool operator!=(const MultipartRequestGroup &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t group_id() {
         return this->group_id_;
     }
@@ -1013,7 +1013,7 @@ public:
     bool operator==(const MultipartReplyGroup &other) const;
     bool operator!=(const MultipartReplyGroup &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::GroupStats> queue_stats() {
         return this->group_stats_;
     }
@@ -1032,7 +1032,7 @@ public:
     ~MultipartRequestGroupDesc() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -1051,7 +1051,7 @@ public:
     bool operator==(const MultipartReplyGroupDesc &other) const;
     bool operator!=(const MultipartReplyGroupDesc &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::GroupDesc> queue_stats() {
         return this->group_desc_;
     }
@@ -1070,7 +1070,7 @@ public:
     ~MultipartRequestGroupFeatures() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -1088,7 +1088,7 @@ public:
     bool operator==(const MultipartReplyGroupFeatures &other) const;
     bool operator!=(const MultipartReplyGroupFeatures &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of13::GroupFeatures features() {
         return this->features_;
     }
@@ -1111,7 +1111,7 @@ public:
     ~MultipartRequestMeter() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t meter_id() {
         return this->meter_id_;
     }
@@ -1136,7 +1136,7 @@ public:
     bool operator==(const MultipartReplyMeter &other) const;
     bool operator!=(const MultipartReplyMeter &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of13::MeterStats> meter_stats() {
         return this->meter_stats_;
     }
@@ -1158,7 +1158,7 @@ public:
     bool operator!=(const MultipartRequestMeterConfig &other) const;
     ~MultipartRequestMeterConfig() {}
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t meter_id() {
         return this->meter_id_;
     }
@@ -1181,7 +1181,7 @@ public:
     bool operator==(const MultipartReplyMeterConfig &other) const;
     bool operator!=(const MultipartReplyMeterConfig &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<MeterConfig> meter_config() {
         return this->meter_config_;
     }
@@ -1199,7 +1199,7 @@ public:
     MultipartRequestMeterFeatures(uint32_t xid, uint16_t flags);
     ~MultipartRequestMeterFeatures() {}
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -1216,7 +1216,7 @@ public:
     bool operator==(const MultipartReplyMeterFeatures &other) const;
     bool operator!=(const MultipartReplyMeterFeatures &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     MeterFeatures meter_features() {
         return this->meter_features_;
     }
@@ -1240,7 +1240,7 @@ public:
     bool operator==(const MultipartRequestTableFeatures &other) const;
     bool operator!=(const MultipartRequestTableFeatures &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<TableFeatures> tables_features() {
         return this->tables_features_;
     }
@@ -1263,7 +1263,7 @@ public:
     bool operator==(const MultipartReplyTableFeatures &other) const;
     bool operator!=(const MultipartReplyTableFeatures &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<TableFeatures> table_features() {
         return this->tables_features_;
     }
@@ -1280,7 +1280,7 @@ public:
     MultipartRequestPortDescription(uint32_t xid, uint16_t flags);
     ~MultipartRequestPortDescription() {}
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -1298,7 +1298,7 @@ public:
     bool operator==(const MultipartReplyPortDescription &other) const;
     bool operator!=(const MultipartReplyPortDescription &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     const std::vector<of13::Port> ports() const {
         return this->ports_;
     }
@@ -1322,7 +1322,7 @@ public:
     bool operator==(const MultipartRequestExperimenter &other) const;
     bool operator!=(const MultipartRequestExperimenter &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t experimenter() {
         return this->experimenter_;
     }
@@ -1347,7 +1347,7 @@ public:
     bool operator==(const MultipartReplyExperimenter &other) const;
     bool operator!=(const MultipartReplyExperimenter &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t experimenter() {
         return this->experimenter_;
     }
@@ -1395,7 +1395,7 @@ public:
     bool operator==(const QueueGetConfigRequest &other) const;
     bool operator!=(const QueueGetConfigRequest &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t port() {
         return this->port_;
     }
@@ -1421,7 +1421,7 @@ public:
     bool operator==(const QueueGetConfigReply &other) const;
     bool operator!=(const QueueGetConfigReply &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t port() {
         return this->port_;
     }
@@ -1516,7 +1516,7 @@ public:
     bool operator==(const MeterMod &other) const;
     bool operator!=(const MeterMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t command() {
         return this->command_;
     }

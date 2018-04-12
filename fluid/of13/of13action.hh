@@ -22,7 +22,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual OutputAction* clone() const {
         return new OutputAction(*this);
     }
@@ -50,7 +50,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual CopyTTLOutAction* clone() const {
         return new CopyTTLOutAction(*this);
     }
@@ -66,7 +66,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual CopyTTLInAction* clone() const {
         return new CopyTTLInAction(*this);
     }
@@ -85,7 +85,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t mpls_ttl() {
         return this->mpls_ttl_;
     }
@@ -107,7 +107,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual DecMPLSTTLAction* clone() const {
         return new DecMPLSTTLAction(*this);
     }
@@ -126,7 +126,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PushVLANAction* clone() const {
         return new PushVLANAction(*this);
     }
@@ -148,7 +148,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PopVLANAction* clone() const {
         return new PopVLANAction(*this);
     }
@@ -167,7 +167,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PushMPLSAction* clone() const {
         return new PushMPLSAction(*this);
     }
@@ -192,7 +192,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PopMPLSAction* clone() const {
         return new PopMPLSAction(*this);
     }
@@ -217,7 +217,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetQueueAction* clone() const {
         return new SetQueueAction(*this);
     }
@@ -242,7 +242,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual GroupAction* clone() const {
         return new GroupAction(*this);
     }
@@ -267,7 +267,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetNWTTLAction* clone() const {
         return new SetNWTTLAction(*this);
     }
@@ -289,7 +289,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual DecNWTTLAction* clone() const {
         return new DecNWTTLAction(*this);
     }
@@ -313,7 +313,7 @@ public:
 	    return this->field_ ? this->field_->field() : 0;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetFieldAction* clone() const {
         return new SetFieldAction(*this);
     }
@@ -335,7 +335,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PushPBBAction* clone() const {
         return new PushPBBAction(*this);
     }
@@ -357,7 +357,7 @@ public:
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual PopPBBAction* clone() const {
         return new PopPBBAction(*this);
     }
@@ -372,7 +372,7 @@ public:
     ~ExperimenterAction() {}
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual ExperimenterAction* clone() const {
         return new ExperimenterAction(*this);
     }

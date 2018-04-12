@@ -26,7 +26,7 @@ public:
         return new MeterBand(*this);
     }
     virtual size_t pack(uint8_t* buffer);
-    virtual of_error unpack(uint8_t* buffer);
+    virtual of_error unpack(const uint8_t* buffer);
     uint16_t type() {
         return this->type_;
     }
@@ -70,7 +70,7 @@ public:
     bool operator==(const MeterBandList &other) const;
     bool operator!=(const MeterBandList &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<MeterBand*> meter_bands() const {
       return std::vector<MeterBand*>(band_list_.begin(), band_list_.end());
     }
@@ -94,7 +94,7 @@ public:
         return new MeterBandDrop(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 class MeterBandDSCPRemark: public MeterBand {
@@ -107,7 +107,7 @@ public:
     }
     virtual bool equals(const MeterBand & other);
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual MeterBandDSCPRemark* clone() {
         return new MeterBandDSCPRemark(*this);
     }
@@ -133,7 +133,7 @@ public:
         return new MeterBandExperimenter(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t experimenter() {
         return this->experimenter_;
     }
@@ -157,7 +157,7 @@ public:
     bool operator==(const MeterConfig &other) const;
     bool operator!=(const MeterConfig &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t length() {
         return this->length_;
     }
@@ -190,7 +190,7 @@ public:
     bool operator==(const MeterFeatures &other) const;
     bool operator!=(const MeterFeatures &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t max_meter() {
         return this->max_meter_;
     }
@@ -235,7 +235,7 @@ public:
     bool operator==(const BandStats &other) const;
     bool operator!=(const BandStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint64_t packet_band_count() {
         return this->packet_band_count_;
     }
@@ -267,7 +267,7 @@ public:
     bool operator==(const MeterStats &other) const;
     bool operator!=(const MeterStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t meter_id() {
         return this->meter_id_;
     }

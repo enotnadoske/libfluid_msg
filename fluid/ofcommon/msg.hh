@@ -79,7 +79,7 @@ public:
     }
     virtual ~EchoCommon();
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     bool operator==(const EchoCommon &other) const;
     bool operator!=(const EchoCommon &other) const;
     void* data() {
@@ -110,7 +110,7 @@ public:
     bool operator==(const ErrorCommon &other) const;
     bool operator!=(const ErrorCommon &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t err_type() {
         return this->err_type_;
     }
@@ -191,7 +191,7 @@ public:
     bool operator==(const SwitchConfigCommon &other) const;
     bool operator!=(const SwitchConfigCommon &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t flags() {
         return this->flags_;
     }

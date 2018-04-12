@@ -23,7 +23,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port() {
         return this->port_;
     }
@@ -51,7 +51,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t vlan_vid() {
         return this->vlan_vid_;
     }
@@ -73,7 +73,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t vlan_pcp() {
         return this->vlan_pcp_;
     }
@@ -88,7 +88,7 @@ public:
     ~StripVLANAction() {
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual StripVLANAction* clone() {
         return new StripVLANAction(*this);
     }
@@ -104,7 +104,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetDLSrcAction* clone() {
         return new SetDLSrcAction(*this);
     }
@@ -126,7 +126,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetDLDstAction* clone() {
         return new SetDLDstAction(*this);
     }
@@ -149,7 +149,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetNWSrcAction* clone() {
         return new SetNWSrcAction(*this);
     }
@@ -171,7 +171,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetNWDstAction* clone() {
         return new SetNWDstAction(*this);
     }
@@ -193,7 +193,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetNWTOSAction* clone() {
         return new SetNWTOSAction(*this);
     }
@@ -215,7 +215,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetTPSrcAction* clone() {
         return new SetTPSrcAction(*this);
     }
@@ -237,7 +237,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual SetTPDstAction* clone() {
         return new SetTPDstAction(*this);
     }
@@ -260,7 +260,7 @@ public:
     }
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     virtual EnqueueAction* clone() {
         return new EnqueueAction(*this);
     }
@@ -291,7 +291,7 @@ public:
         return new VendorAction(*this);
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     IPAddress vendor() {
         return this->vendor_;
     }
