@@ -62,6 +62,7 @@ public:
     virtual ~OXMTLV() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order()  const { return 0; }
     virtual bool operator==(const OXMTLV &other) const;
     virtual bool operator!=(const OXMTLV &other) const;
     virtual OXMTLV& operator=(const OXMTLV& field);
@@ -109,12 +110,14 @@ public:
 class InPort: public OXMTLV {
 private:
     uint32_t value_;
+    uint16_t set_order_ = 1;
 public:
     InPort();
     InPort(uint32_t value);
     ~InPort() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual InPort* clone() const {
         return new InPort(*this);
@@ -132,12 +135,14 @@ public:
 class InPhyPort: public OXMTLV {
 private:
     uint32_t value_;
+    uint16_t set_order_ = 2;
 public:
     InPhyPort();
     InPhyPort(uint32_t value);
     ~InPhyPort() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual InPhyPort* clone() const {
         return new InPhyPort(*this);
@@ -156,6 +161,7 @@ class Metadata: public OXMTLV {
 private:
     uint64_t value_;
     uint64_t mask_;
+    uint16_t set_order_ = 3;
 public:
     Metadata();
     Metadata(uint64_t value);
@@ -163,6 +169,7 @@ public:
     ~Metadata() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual Metadata* clone() const {
         return new Metadata(*this);
@@ -187,6 +194,7 @@ class EthDst: public OXMTLV {
 private:
     EthAddress value_;
     EthAddress mask_;
+    uint16_t set_order_ = 4;
 public:
     EthDst();
     EthDst(EthAddress value);
@@ -194,6 +202,7 @@ public:
     ~EthDst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthDst* clone() const {
         return new EthDst(*this);
@@ -218,6 +227,7 @@ class EthSrc: public OXMTLV {
 private:
     EthAddress value_;
     EthAddress mask_;
+    uint16_t set_order_ = 5;
 public:
     EthSrc();
     EthSrc(EthAddress value);
@@ -225,6 +235,7 @@ public:
     ~EthSrc() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthSrc* clone() const {
         return new EthSrc(*this);
@@ -248,12 +259,14 @@ public:
 class EthType: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 6;
 public:
     EthType();
     EthType(uint16_t value);
     ~EthType() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual EthType* clone() const {
         return new EthType(*this);
@@ -272,6 +285,7 @@ class VLANVid: public OXMTLV {
 private:
     uint16_t value_;
     uint16_t mask_;
+    uint16_t set_order_ = 7;
 public:
     VLANVid();
     VLANVid(uint16_t value);
@@ -279,6 +293,7 @@ public:
     ~VLANVid() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual VLANVid* clone() const {
         return new VLANVid(*this);
@@ -302,12 +317,14 @@ public:
 class VLANPcp: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 8;
 public:
     VLANPcp();
     VLANPcp(uint8_t value);
     ~VLANPcp() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual VLANPcp* clone() const {
         return new VLANPcp(*this);
@@ -325,12 +342,14 @@ public:
 class IPDSCP: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 9;
 public:
     IPDSCP();
     IPDSCP(uint8_t value);
     ~IPDSCP() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPDSCP* clone() const {
         return new IPDSCP(*this);
@@ -348,12 +367,14 @@ public:
 class IPECN: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 10;
 public:
     IPECN();
     IPECN(uint8_t value);
     ~IPECN() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPECN* clone() const {
         return new IPECN(*this);
@@ -371,12 +392,14 @@ public:
 class IPProto: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 11;
 public:
     IPProto();
     IPProto(uint8_t value);
     ~IPProto() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPProto* clone() const {
         return new IPProto(*this);
@@ -395,6 +418,7 @@ class IPv4Src: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 12;
 public:
     IPv4Src();
     IPv4Src(IPAddress value);
@@ -402,6 +426,7 @@ public:
     ~IPv4Src() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv4Src* clone() const {
         return new IPv4Src(*this);
@@ -426,6 +451,7 @@ class IPv4Dst: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 13;
 public:
     IPv4Dst();
     IPv4Dst(IPAddress value);
@@ -433,6 +459,7 @@ public:
     ~IPv4Dst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv4Dst* clone() const {
         return new IPv4Dst(*this);
@@ -456,12 +483,14 @@ public:
 class TCPSrc: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 14;
 public:
     TCPSrc();
     TCPSrc(uint16_t value);
     ~TCPSrc() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual TCPSrc* clone() const {
         return new TCPSrc(*this);
@@ -480,12 +509,14 @@ public:
 class TCPDst: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 15;
 public:
     TCPDst();
     TCPDst(uint16_t value);
     ~TCPDst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual TCPDst* clone() const {
         return new TCPDst(*this);
@@ -503,12 +534,14 @@ public:
 class UDPSrc: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 16;
 public:
     UDPSrc();
     UDPSrc(uint16_t value);
     ~UDPSrc() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual UDPSrc* clone() const {
         return new UDPSrc(*this);
@@ -526,12 +559,14 @@ public:
 class UDPDst: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 17;
 public:
     UDPDst();
     UDPDst(uint16_t value);
     ~UDPDst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual UDPDst* clone() const {
         return new UDPDst(*this);
@@ -549,12 +584,14 @@ public:
 class SCTPSrc: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 18;
 public:
     SCTPSrc();
     SCTPSrc(uint16_t value);
     ~SCTPSrc() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual SCTPSrc* clone() const {
         return new SCTPSrc(*this);
@@ -573,12 +610,14 @@ public:
 class SCTPDst: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 19;
 public:
     SCTPDst();
     SCTPDst(uint16_t value);
     ~SCTPDst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual SCTPDst* clone() const {
         return new SCTPDst(*this);
@@ -596,12 +635,14 @@ public:
 class ICMPv4Code: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 20;
 public:
     ICMPv4Code();
     ICMPv4Code(uint8_t value);
     ~ICMPv4Code() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ICMPv4Code* clone() const {
         return new ICMPv4Code(*this);
@@ -619,12 +660,14 @@ public:
 class ICMPv4Type: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 21;
 public:
     ICMPv4Type();
     ICMPv4Type(uint8_t value);
     ~ICMPv4Type() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ICMPv4Type* clone() const {
         return new ICMPv4Type(*this);
@@ -642,12 +685,14 @@ public:
 class ARPOp: public OXMTLV {
 private:
     uint16_t value_;
+    uint16_t set_order_ = 22;
 public:
     ARPOp();
     ARPOp(uint16_t value);
     ~ARPOp() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ARPOp* clone() const {
         return new ARPOp(*this);
@@ -666,6 +711,7 @@ class ARPSPA: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 23;
 public:
     ARPSPA();
     ARPSPA(IPAddress value);
@@ -673,6 +719,7 @@ public:
     ~ARPSPA() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ARPSPA* clone() const {
         return new ARPSPA(*this);
@@ -698,6 +745,7 @@ class ARPTPA: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 24;
 public:
     ARPTPA();
     ARPTPA(IPAddress value);
@@ -705,6 +753,7 @@ public:
     ~ARPTPA() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ARPTPA* clone() const {
         return new ARPTPA(*this);
@@ -729,6 +778,7 @@ class ARPSHA: public OXMTLV {
 private:
     EthAddress value_;
     EthAddress mask_;
+    uint16_t set_order_ = 25;
 public:
     ARPSHA();
     ARPSHA(EthAddress value);
@@ -736,6 +786,7 @@ public:
     ~ARPSHA() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ARPSHA* clone() const {
         return new ARPSHA(*this);
@@ -757,6 +808,7 @@ class ARPTHA: public OXMTLV {
 private:
     EthAddress value_;
     EthAddress mask_;
+    uint16_t set_order_ = 26;
 public:
     ARPTHA();
     ARPTHA(EthAddress value);
@@ -764,6 +816,7 @@ public:
     ~ARPTHA() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ARPTHA* clone() const {
         return new ARPTHA(*this);
@@ -786,6 +839,7 @@ class IPv6Src: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 27;
 public:
     IPv6Src();
     IPv6Src(IPAddress value);
@@ -793,6 +847,7 @@ public:
     ~IPv6Src() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6Src* clone() const {
         return new IPv6Src(*this);
@@ -817,6 +872,7 @@ class IPv6Dst: public OXMTLV {
 private:
     IPAddress value_;
     IPAddress mask_;
+    uint16_t set_order_ = 28;
 public:
     IPv6Dst();
     IPv6Dst(IPAddress value);
@@ -824,6 +880,7 @@ public:
     ~IPv6Dst() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6Dst* clone() const {
         return new IPv6Dst(*this);
@@ -848,6 +905,7 @@ class IPV6Flabel: public OXMTLV {
 private:
     uint32_t value_;
     uint32_t mask_;
+    uint16_t set_order_ = 29;
 public:
     IPV6Flabel();
     IPV6Flabel(uint32_t value);
@@ -855,6 +913,7 @@ public:
     ~IPV6Flabel() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPV6Flabel* clone() const {
         return new IPV6Flabel(*this);
@@ -878,12 +937,14 @@ public:
 class ICMPv6Type: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 30;
 public:
     ICMPv6Type();
     ICMPv6Type(uint8_t value);
     ~ICMPv6Type() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ICMPv6Type* clone() const {
         return new ICMPv6Type(*this);
@@ -901,12 +962,14 @@ public:
 class ICMPv6Code: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 31;
 public:
     ICMPv6Code();
     ICMPv6Code(uint8_t value);
     ~ICMPv6Code() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual ICMPv6Code* clone() const {
         return new ICMPv6Code(*this);
@@ -924,12 +987,14 @@ public:
 class IPv6NDTarget: public OXMTLV {
 private:
     IPAddress value_;
+    uint16_t set_order_ = 32;
 public:
     IPv6NDTarget();
     IPv6NDTarget(IPAddress value);
     ~IPv6NDTarget() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6NDTarget* clone() const {
         return new IPv6NDTarget(*this);
@@ -947,12 +1012,14 @@ public:
 class IPv6NDSLL: public OXMTLV {
 private:
     EthAddress value_;
+    uint16_t set_order_ = 33;
 public:
     IPv6NDSLL();
     IPv6NDSLL(EthAddress value);
     ~IPv6NDSLL() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6NDSLL* clone() const {
         return new IPv6NDSLL(*this);
@@ -970,12 +1037,14 @@ public:
 class IPv6NDTLL: public OXMTLV {
 private:
     EthAddress value_;
+    uint16_t set_order_ = 34;
 public:
     IPv6NDTLL();
     IPv6NDTLL(EthAddress value);
     ~IPv6NDTLL() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6NDTLL* clone() const {
         return new IPv6NDTLL(*this);
@@ -993,12 +1062,14 @@ public:
 class MPLSLabel: public OXMTLV {
 private:
     uint32_t value_;
+    uint16_t set_order_ = 35;
 public:
     MPLSLabel();
     MPLSLabel(uint32_t value);
     ~MPLSLabel() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual MPLSLabel* clone() const {
         return new MPLSLabel(*this);
@@ -1016,12 +1087,14 @@ public:
 class MPLSTC: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 36;
 public:
     MPLSTC();
     MPLSTC(uint8_t value);
     ~MPLSTC() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual MPLSTC* clone() const {
         return new MPLSTC(*this);
@@ -1039,12 +1112,14 @@ public:
 class MPLSBOS: public OXMTLV {
 private:
     uint8_t value_;
+    uint16_t set_order_ = 37;
 public:
     MPLSBOS();
     MPLSBOS(uint8_t value);
     ~MPLSBOS() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual MPLSBOS* clone() const {
         return new MPLSBOS(*this);
@@ -1063,6 +1138,7 @@ class PBBIsid: public OXMTLV {
 private:
     uint32_t value_;
     uint32_t mask_;
+    uint16_t set_order_ = 38;
 public:
     PBBIsid();
     PBBIsid(uint32_t value);
@@ -1070,6 +1146,7 @@ public:
     ~PBBIsid() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual PBBIsid* clone() const {
         return new PBBIsid(*this);
@@ -1094,6 +1171,7 @@ class TUNNELId: public OXMTLV {
 private:
     uint64_t value_;
     uint64_t mask_;
+    uint16_t set_order_ = 39;
 public:
     TUNNELId();
     TUNNELId(uint64_t value);
@@ -1101,6 +1179,7 @@ public:
     ~TUNNELId() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual TUNNELId* clone() const {
         return new TUNNELId(*this);
@@ -1119,6 +1198,7 @@ class IPv6Exthdr: public OXMTLV {
 private:
     uint16_t value_;
     uint16_t mask_;
+    uint16_t set_order_ = 40;
 public:
     IPv6Exthdr();
     IPv6Exthdr(uint16_t value);
@@ -1126,6 +1206,7 @@ public:
     ~IPv6Exthdr() {
     }
     virtual bool equals(const OXMTLV & other);
+    virtual uint16_t set_order() const { return set_order_; }
     OXMTLV& operator=(const OXMTLV& field);
     virtual IPv6Exthdr* clone() const {
         return new IPv6Exthdr(*this);

@@ -401,14 +401,14 @@ SetFieldAction::SetFieldAction()
 }
 
 SetFieldAction::SetFieldAction(OXMTLV* field)
-    : set_order_(16000),
+    : set_order_(16000 + field->set_order()),
       Action(of13::OFPAT_SET_FIELD, sizeof(struct of13::ofp_action_set_field)) {
     this->field(field);
 }
 
 
 SetFieldAction::SetFieldAction(const SetFieldAction &other)
-    : set_order_(16000) {
+    : set_order_(other.set_order_) {
     this->type_ = other.type_;
     this->length_ = other.length_;
     this->field_ = other.field_->clone();
