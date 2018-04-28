@@ -34,7 +34,7 @@ IPAddress::IPAddress(const std::string &address){
 }
 
 IPAddress::IPAddress(const IPAddress &other): version(other.version) {
-    if(this->version == IPV4){
+    if (this->version == IPV4){
         this->ipv4 = other.ipv4;
     }
     else {
@@ -59,7 +59,7 @@ IPAddress::IPAddress(const struct in6_addr& ip_addr):version(IPV6){
 IPAddress& IPAddress::operator=(const IPAddress &other) {
     if (this != &other) {
         this->version = other.version;
-        if(this->version == IPV4){
+        if (this->version == IPV4) {
             this->ipv4 = other.ipv4;
         }
         else {

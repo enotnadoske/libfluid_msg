@@ -238,7 +238,6 @@ Metadata::Metadata(uint64_t value, uint64_t mask)
 }
 
 bool Metadata::equals(const OXMTLV &other) {
-
     if (const Metadata * field = dynamic_cast<const Metadata *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -255,7 +254,6 @@ OXMTLV& Metadata::operator=(const OXMTLV& field) {
     this->mask_ = meta.mask_;
     return *this;
 }
-;
 
 size_t Metadata::pack(uint8_t *buffer) {
     OXMTLV::pack(buffer);
@@ -282,7 +280,8 @@ of_error Metadata::unpack(const uint8_t *buffer) {
 }
 
 EthDst::EthDst()
-      : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_DST, false,
+      : mask_("ff:ff:ff:ff:ff:ff"),
+        OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_DST, false,
           OFP_ETH_ALEN) {
     create_oxm_req(0, 0, 0, 0);
 }
@@ -349,7 +348,8 @@ of_error EthDst::unpack(const uint8_t *buffer) {
 }
 
 EthSrc::EthSrc()
-    : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_SRC, false,
+    : mask_("ff:ff:ff:ff:ff:ff"),
+      OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_SRC, false,
           OFP_ETH_ALEN) {
     create_oxm_req(0, 0, 0, 0);
 }
@@ -701,7 +701,7 @@ IPv4Src::IPv4Src()
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_SRC, false,
           of13::OFP_OXM_IPV4_LEN),
       value_((uint32_t) 0),
-      mask_((uint32_t) 0) {
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -709,8 +709,7 @@ IPv4Src::IPv4Src(IPAddress value)
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_SRC, false,
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
-      mask_((uint32_t) 0) {
-    // this->value_  = value;
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -719,13 +718,10 @@ IPv4Src::IPv4Src(IPAddress value, IPAddress mask)
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
       mask_(mask) {
-    // this->value_  = value;
-    // this->mask_  = mask;
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
 bool IPv4Src::equals(const OXMTLV &other) {
-
     if (const IPv4Src * field = dynamic_cast<const IPv4Src *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -742,7 +738,6 @@ OXMTLV& IPv4Src::operator=(const OXMTLV& field) {
     this->mask_ = src.mask_;
     return *this;
 }
-;
 
 size_t IPv4Src::pack(uint8_t *buffer) {
     OXMTLV::pack(buffer);
@@ -774,7 +769,7 @@ IPv4Dst::IPv4Dst()
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_DST, false,
           of13::OFP_OXM_IPV4_LEN),
       value_((uint32_t) 0),
-      mask_((uint32_t) 0) {
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -782,8 +777,7 @@ IPv4Dst::IPv4Dst(IPAddress value)
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_DST, false,
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
-      mask_((uint32_t) 0) {
-    // this->value_  = value;
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -792,13 +786,10 @@ IPv4Dst::IPv4Dst(IPAddress value, IPAddress mask)
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
       mask_(mask) {
-    // this->value_  = value;
-    // this->mask_  = mask;
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
 bool IPv4Dst::equals(const OXMTLV &other) {
-
     if (const IPv4Dst * field = dynamic_cast<const IPv4Dst *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -857,7 +848,6 @@ TCPSrc::TCPSrc(uint16_t value)
 }
 
 bool TCPSrc::equals(const OXMTLV &other) {
-
     if (const TCPSrc * field = dynamic_cast<const TCPSrc *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_));
     }
@@ -1208,7 +1198,6 @@ ARPOp::ARPOp(uint16_t value)
 }
 
 bool ARPOp::equals(const OXMTLV &other) {
-
     if (const ARPOp * field = dynamic_cast<const ARPOp *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_));
     }
@@ -1259,7 +1248,6 @@ ARPSPA::ARPSPA(IPAddress value, IPAddress mask)
 }
 
 bool ARPSPA::equals(const OXMTLV &other) {
-
     if (const ARPSPA * field = dynamic_cast<const ARPSPA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1326,7 +1314,6 @@ ARPTPA::ARPTPA(IPAddress value, IPAddress mask)
 }
 
 bool ARPTPA::equals(const OXMTLV &other) {
-
     if (const ARPTPA * field = dynamic_cast<const ARPTPA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1395,7 +1382,6 @@ ARPSHA::ARPSHA(EthAddress value, EthAddress mask)
 }
 
 bool ARPSHA::equals(const OXMTLV &other) {
-
     if (const ARPSHA * field = dynamic_cast<const ARPSHA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1463,7 +1449,6 @@ ARPTHA::ARPTHA(EthAddress value, EthAddress mask)
 }
 
 bool ARPTHA::equals(const OXMTLV &other) {
-
     if (const ARPTHA * field = dynamic_cast<const ARPTHA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1529,7 +1514,6 @@ IPv6Src::IPv6Src(IPAddress value, IPAddress mask)
 }
 
 bool IPv6Src::equals(const OXMTLV &other) {
-
     if (const IPv6Src * field = dynamic_cast<const IPv6Src *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));

@@ -290,9 +290,7 @@ public:
     PacketIn();
     PacketIn(uint32_t xid, uint32_t buffer_id, uint16_t total_len,
         uint8_t reason, uint8_t table_id, uint64_t cookie);
-    ~PacketIn() {
-    }
-    ;
+    ~PacketIn() {}
     virtual uint16_t length();
     bool operator==(const PacketIn &other) const;
     bool operator!=(const PacketIn &other) const;
