@@ -537,7 +537,7 @@ FlowMod::FlowMod(uint32_t xid, uint64_t cookie, uint64_t cookie_mask,
     ;
 }
 
-uint16_t FlowMod::length() {
+uint16_t FlowMod::length() const {
     return sizeof(struct of13::ofp_flow_mod) - sizeof(struct of13::ofp_match)
         + ROUND_UP(this->match_.length(), 8) + this->instructions_.length();
 }

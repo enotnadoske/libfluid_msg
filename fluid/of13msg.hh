@@ -343,7 +343,7 @@ public:
     bool operator!=(const FlowMod &other) const;
     uint8_t* pack();
     of_error unpack(const uint8_t* buffer);
-    virtual uint16_t length();
+    virtual uint16_t length() const;
     uint8_t command() const {
         return this->command_;
     }
