@@ -359,10 +359,10 @@ public:
     uint32_t out_group() const {
         return this->out_group_;
     }
-    of13::Match match() {
+    of13::Match match() const {
         return this->match_;
     }
-    of13::InstructionSet instructions() {
+    of13::InstructionSet instructions() const {
         return this->instructions_;
     }
     OXMTLV * get_oxm_field(uint8_t field);
