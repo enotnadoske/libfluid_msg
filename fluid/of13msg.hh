@@ -569,10 +569,10 @@ public:
     bool operator!=(const MultipartRequest &other) const;
     uint8_t* pack();
     of_error unpack(const uint8_t* buffer);
-    uint16_t mpart_type() {
+    uint16_t mpart_type() const {
         return this->mpart_type_;
     }
-    uint16_t flags() {
+    uint16_t flags() const {
         return this->flags_;
     }
     void type(uint16_t type) {

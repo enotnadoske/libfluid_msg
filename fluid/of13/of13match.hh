@@ -21,8 +21,7 @@ protected:
 public:
     MatchHeader();
     MatchHeader(uint16_t type, uint16_t length);
-    virtual ~MatchHeader() {
-    }
+    virtual ~MatchHeader() {}
     bool operator==(const MatchHeader &other) const;
     bool operator!=(const MatchHeader &other) const;
     virtual size_t pack(uint8_t *buffer);
