@@ -320,7 +320,7 @@ public:
     void cookie(uint64_t cookie) {
         this->cookie_ = cookie;
     }
-    void packet_count(uint16_t packet_count) {
+    void packet_count(uint64_t packet_count) {
         this->packet_count_ = packet_count;
     }
     void byte_count(uint64_t byte_count) {
