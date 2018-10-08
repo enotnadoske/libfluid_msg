@@ -17,23 +17,22 @@ protected:
 public:
     Instruction();
     Instruction(uint16_t type, uint16_t length);
-    virtual ~Instruction() {
-    }
+    virtual ~Instruction() {}
     virtual bool equals(const Instruction & other);
     virtual bool operator==(const Instruction &other) const;
     virtual bool operator!=(const Instruction &other) const;
     virtual uint16_t set_order() const {
         return 0;
     }
-    virtual Instruction* clone() {
+    virtual Instruction* clone() const {
         return new Instruction(*this);
     }
     virtual size_t pack(uint8_t* buffer);
-    virtual of_error unpack(uint8_t* buffer);
-    uint16_t type() {
+    virtual of_error unpack(const uint8_t* buffer);
+    uint16_t type() const {
         return this->type_;
     }
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
     void type(uint16_t type) {
@@ -56,9 +55,7 @@ private:
     uint16_t length_;
     std::set<Instruction*, comp_inst_set_order> instruction_set_;
 public:
-    InstructionSet()
-        : length_(0) {
-    }
+    InstructionSet() : length_(0) {}
     InstructionSet(std::set<Instruction*> instruction_set);
     InstructionSet(const InstructionSet &other);
     InstructionSet& operator=(InstructionSet other);
@@ -66,12 +63,12 @@ public:
     bool operator==(const InstructionSet &other) const;
     bool operator!=(const InstructionSet &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     friend void swap(InstructionSet& first, InstructionSet& second);
-    uint16_t length() {
+    uint16_t length() const {
         return this->length_;
     }
-    std::set<Instruction*, comp_inst_set_order> instruction_set(){
+    const std::set<Instruction*, comp_inst_set_order>& instruction_set() const {
         return this->instruction_set_;
     }    
     void add_instruction(Instruction &inst);
@@ -92,18 +89,17 @@ public:
           set_order_(60) {
     }
     GoToTable(uint8_t table_id);
-    ~GoToTable() {
-    }
+    ~GoToTable() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     virtual bool equals(const Instruction & other);
-    virtual GoToTable* clone() {
+    virtual GoToTable* clone() const {
         return new GoToTable(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint8_t table_id() {
+    of_error unpack(const uint8_t* buffer);
+    uint8_t table_id() const {
         return this->table_id_;
     }
     void table_id(uint8_t table_id) {
@@ -123,21 +119,20 @@ public:
           set_order_(50) {
     }
     WriteMetadata(uint64_t metadata, uint64_t metadata_mask);
-    ~WriteMetadata() {
-    }
+    ~WriteMetadata() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     virtual bool equals(const Instruction & other);
-    virtual WriteMetadata* clone() {
+    virtual WriteMetadata* clone() const {
         return new WriteMetadata(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint64_t metadata() {
+    of_error unpack(const uint8_t* buffer);
+    uint64_t metadata() const {
         return this->metadata_;
     }
-    uint64_t metadata_mask() {
+    uint64_t metadata_mask() const {
         return this->metadata_mask_;
     }
     void metadata(uint64_t metadata) {
@@ -159,18 +154,17 @@ public:
           set_order_(40) {
     }
     WriteActions(ActionSet actions);
-    ~WriteActions() {
-    }
+    ~WriteActions() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     virtual bool equals(const Instruction & other);
     size_t pack(uint8_t* buffer);
-    virtual WriteActions* clone() {
+    virtual WriteActions* clone() const {
         return new WriteActions(*this);
     }
-    of_error unpack(uint8_t* buffer);
-    ActionSet actions() {
+    of_error unpack(const uint8_t* buffer);
+    const ActionSet& actions() const {
         return this->actions_;
     }
     void actions(ActionSet actions);
@@ -189,18 +183,17 @@ public:
           set_order_(20) {
     }
     ApplyActions(ActionList actions);
-    ~ApplyActions() {
-    }
+    ~ApplyActions() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     virtual bool equals(const Instruction & other);
-    virtual ApplyActions* clone() {
+    virtual ApplyActions* clone() const {
         return new ApplyActions(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    ActionList actions() {
+    of_error unpack(const uint8_t* buffer);
+    const ActionList& actions() const {
         return this->actions_;
     }
     void actions(ActionList actions);
@@ -217,16 +210,15 @@ public:
               sizeof(struct of13::ofp_instruction)),
           set_order_(30) {
     }
-    ~ClearActions() {
-    }
+    ~ClearActions() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
-    virtual ClearActions* clone() {
+    virtual ClearActions* clone() const {
         return new ClearActions(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 class Meter: public Instruction {
@@ -240,18 +232,17 @@ public:
           set_order_(10) {
     }
     Meter(uint32_t meter_id);
-    ~Meter() {
-    }
+    ~Meter() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     virtual bool equals(const Instruction & other);
-    virtual Meter* clone() {
+    virtual Meter* clone() const {
         return new Meter(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint32_t meter_id() {
+    of_error unpack(const uint8_t* buffer);
+    uint32_t meter_id() const {
         return this->meter_id_;
     }
     void meter_id(uint32_t meter_id) {
@@ -263,18 +254,16 @@ class InstructionExperimenter: public Instruction {
 protected:
     uint32_t experimenter_;
 public:
-    InstructionExperimenter() {
-    }
+    InstructionExperimenter() {}
     InstructionExperimenter(uint32_t experimenter);
-    ~InstructionExperimenter() {
-    }
+    ~InstructionExperimenter() {}
     virtual bool equals(const Instruction & other);
-    virtual InstructionExperimenter* clone() {
+    virtual InstructionExperimenter* clone() const {
         return new InstructionExperimenter(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint32_t experimenter() {
+    of_error unpack(const uint8_t* buffer);
+    uint32_t experimenter() const {
         return this->experimenter_;
     }
     void experimenter(uint32_t experimenter) {

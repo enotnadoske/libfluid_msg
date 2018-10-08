@@ -37,7 +37,7 @@ size_t OutputAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error OutputAction::unpack(uint8_t *buffer) {
+of_error OutputAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_output* ao =
         (struct of13::ofp_action_output*) buffer;
     Action::unpack(buffer);
@@ -58,7 +58,7 @@ size_t CopyTTLInAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error CopyTTLInAction::unpack(uint8_t *buffer) {
+of_error CopyTTLInAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -75,7 +75,7 @@ size_t CopyTTLOutAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error CopyTTLOutAction::unpack(uint8_t *buffer) {
+of_error CopyTTLOutAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -111,7 +111,7 @@ size_t SetMPLSTTLAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error SetMPLSTTLAction::unpack(uint8_t *buffer) {
+of_error SetMPLSTTLAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_mpls_ttl * mt =
         (struct of13::ofp_action_mpls_ttl*) buffer;
     Action::unpack(buffer);
@@ -131,7 +131,7 @@ size_t DecMPLSTTLAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error DecMPLSTTLAction::unpack(uint8_t *buffer) {
+of_error DecMPLSTTLAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -166,7 +166,7 @@ size_t PushVLANAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PushVLANAction::unpack(uint8_t *buffer) {
+of_error PushVLANAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_push *ap = (struct of13::ofp_action_push*) buffer;
     Action::unpack(buffer);
     this->ethertype_ = ntoh16(ap->ethertype);
@@ -185,7 +185,7 @@ size_t PopVLANAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PopVLANAction::unpack(uint8_t *buffer) {
+of_error PopVLANAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -220,7 +220,7 @@ size_t PushMPLSAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PushMPLSAction::unpack(uint8_t *buffer) {
+of_error PushMPLSAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_push *ap = (struct of13::ofp_action_push*) buffer;
     Action::unpack(buffer);
     this->ethertype_ = ntoh16(ap->ethertype);
@@ -257,7 +257,7 @@ size_t PopMPLSAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PopMPLSAction::unpack(uint8_t *buffer) {
+of_error PopMPLSAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_pop_mpls *pm =
         (struct of13::ofp_action_pop_mpls*) buffer;
     Action::unpack(buffer);
@@ -295,7 +295,7 @@ size_t SetQueueAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error SetQueueAction::unpack(uint8_t *buffer) {
+of_error SetQueueAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_set_queue* aq =
         (struct of13::ofp_action_set_queue*) buffer;
     Action::unpack(buffer);
@@ -331,7 +331,7 @@ size_t GroupAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error GroupAction::unpack(uint8_t *buffer) {
+of_error GroupAction::unpack(const uint8_t* buffer) {
     struct ofp_action_group *ag = (struct ofp_action_group*) buffer;
     Action::unpack(buffer);
     this->group_id_ = ntoh32(ag->group_id);
@@ -369,7 +369,7 @@ size_t SetNWTTLAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error SetNWTTLAction::unpack(uint8_t *buffer) {
+of_error SetNWTTLAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_nw_ttl *nt =
         (struct of13::ofp_action_nw_ttl*) buffer;
     Action::unpack(buffer);
@@ -389,7 +389,7 @@ size_t DecNWTTLAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error DecNWTTLAction::unpack(uint8_t *buffer) {
+of_error DecNWTTLAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -448,7 +448,7 @@ bool SetFieldAction::equals(const Action &other) {
     }
 }
 
-OXMTLV* SetFieldAction::field() {
+const OXMTLV* SetFieldAction::field() const {
     return this->field_;
 }
 
@@ -464,8 +464,8 @@ size_t SetFieldAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error SetFieldAction::unpack(uint8_t *buffer) {
-    uint8_t * p = buffer + sizeof(struct of13::ofp_action_set_field) - 4;
+of_error SetFieldAction::unpack(const uint8_t* buffer) {
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_action_set_field) - 4;
     size_t padding;
     Action::unpack(buffer);
     uint32_t header = ntoh32(*((uint32_t*) p));
@@ -503,7 +503,7 @@ size_t PushPBBAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PushPBBAction::unpack(uint8_t *buffer) {
+of_error PushPBBAction::unpack(const uint8_t* buffer) {
     struct of13::ofp_action_push *ap = (struct of13::ofp_action_push*) buffer;
     Action::unpack(buffer);
     this->ethertype_ = ntoh16(ap->ethertype);
@@ -522,7 +522,7 @@ size_t PopPBBAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PopPBBAction::unpack(uint8_t *buffer) {
+of_error PopPBBAction::unpack(const uint8_t* buffer) {
     Action::unpack(buffer);
     return 0;
 }
@@ -558,7 +558,7 @@ size_t ExperimenterAction::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error ExperimenterAction::unpack(uint8_t *buffer) {
+of_error ExperimenterAction::unpack(const uint8_t* buffer) {
     struct ofp_action_experimenter_header * ae =
         (struct ofp_action_experimenter_header*) buffer;
     Action::unpack(buffer);

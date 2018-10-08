@@ -38,7 +38,7 @@ size_t Port::pack(uint8_t* buffer) {
     port->peer = hton32(this->peer_);
     return 0;
 }
-of_error Port::unpack(uint8_t* buffer) {
+of_error Port::unpack(const uint8_t* buffer) {
     struct of10::ofp_phy_port *port = (struct of10::ofp_phy_port*) buffer;
     this->port_no_ = ntoh16(port->port_no);
     this->hw_addr_ = EthAddress(port->hw_addr);
@@ -76,7 +76,7 @@ size_t QueuePropMinRate::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error QueuePropMinRate::unpack(uint8_t* buffer) {
+of_error QueuePropMinRate::unpack(const uint8_t* buffer) {
     struct of10::ofp_queue_prop_min_rate *qp =
         (struct of10::ofp_queue_prop_min_rate *) buffer;
     QueueProperty::unpack(buffer);
@@ -105,11 +105,11 @@ size_t PacketQueue::pack(uint8_t* buffer) {
     return this->len_;
 }
 
-of_error PacketQueue::unpack(uint8_t* buffer) {
+of_error PacketQueue::unpack(const uint8_t* buffer) {
     struct of10::ofp_packet_queue *pq = (struct of10::ofp_packet_queue*) buffer;
     this->queue_id_ = ntoh32(pq->queue_id);
     this->len_ = ntoh16(pq->len);
-    uint8_t *p = buffer + sizeof(struct of10::ofp_packet_queue);
+    const uint8_t* p = buffer + sizeof(struct of10::ofp_packet_queue);
     this->properties_.length(
         this->len_ - sizeof(struct of10::ofp_packet_queue));
     this->properties_.unpack10(p);
@@ -166,7 +166,7 @@ size_t FlowStats::pack(uint8_t* buffer) {
     return this->length_;
 }
 
-of_error FlowStats::unpack(uint8_t* buffer) {
+of_error FlowStats::unpack(const uint8_t* buffer) {
     struct of10::ofp_flow_stats *fs = (struct of10::ofp_flow_stats*) buffer;
     this->match_.unpack(buffer + 4);
     this->length_ = ntoh16(fs->length);
@@ -180,7 +180,7 @@ of_error FlowStats::unpack(uint8_t* buffer) {
     this->packet_count_ = ntoh64(fs->packet_count);
     this->byte_count_ = ntoh64(fs->byte_count);
     this->actions_.length(this->length_ - sizeof(struct of10::ofp_flow_stats));
-    uint8_t * p = buffer + sizeof(struct of10::ofp_flow_stats);
+    const uint8_t* p = buffer + sizeof(struct of10::ofp_flow_stats);
     this->actions_.unpack10(p);
     return 0;
 }
@@ -236,7 +236,7 @@ size_t TableStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error TableStats::unpack(uint8_t* buffer) {
+of_error TableStats::unpack(const uint8_t* buffer) {
     struct of10::ofp_table_stats *ts = (struct of10::ofp_table_stats*) buffer;
     this->table_id_ = ts->table_id;
     this->name_ = std::string(ts->name);
@@ -272,7 +272,7 @@ size_t PortStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error PortStats::unpack(uint8_t* buffer) {
+of_error PortStats::unpack(const uint8_t* buffer) {
     struct of10::ofp_port_stats *ps = (struct of10::ofp_port_stats*) buffer;
     this->port_no_ = ntoh16(ps->port_no);
     PortStatsCommon::unpack(buffer + 8);
@@ -306,7 +306,7 @@ size_t QueueStats::pack(uint8_t* buffer) {
     return 0;
 }
 
-of_error QueueStats::unpack(uint8_t* buffer) {
+of_error QueueStats::unpack(const uint8_t* buffer) {
     struct of10::ofp_queue_stats *qs = (struct of10::ofp_queue_stats*) buffer;
     this->port_no_ = ntoh16(qs->port_no);
     this->queue_id_ = ntoh32(qs->queue_id);

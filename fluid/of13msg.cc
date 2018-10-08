@@ -35,7 +35,7 @@ uint8_t* RoleCommon::pack() {
     return buffer;
 }
 
-of_error RoleCommon::unpack(uint8_t *buffer) {
+of_error RoleCommon::unpack(const uint8_t* buffer) {
     struct ofp_role_request * rq = (struct ofp_role_request*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_role_request)) {
@@ -98,7 +98,7 @@ uint8_t* AsyncConfigCommon::pack() {
     return buffer;
 }
 
-of_error AsyncConfigCommon::unpack(uint8_t *buffer) {
+of_error AsyncConfigCommon::unpack(const uint8_t* buffer) {
     struct ofp_async_config *ar = (struct ofp_async_config *) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_async_config)) {
@@ -148,11 +148,11 @@ uint8_t* Hello::pack() {
     return buffer;
 }
 
-of_error Hello::unpack(uint8_t* buffer) {
+of_error Hello::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     /*Unpack the Hello elements*/
     uint32_t len = this->length_ - sizeof(struct ofp_header);
-    uint8_t *p = buffer + sizeof(struct ofp_header);
+    const uint8_t* p = buffer + sizeof(struct ofp_header);
     while (len) {
         HelloElemVersionBitmap he;
         he.unpack(p);
@@ -171,7 +171,6 @@ void Hello::elements(std::list<HelloElemVersionBitmap> elements) {
 void Hello::add_element(HelloElemVersionBitmap element) {
     this->elements_.push_back(element);
     this->length_ += element.length();
-
 }
 
 uint32_t Hello::elements_len() {
@@ -245,7 +244,7 @@ uint8_t* Experimenter::pack() {
     return buffer;
 }
 
-of_error Experimenter::unpack(uint8_t *buffer) {
+of_error Experimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_experimenter_header *em =
         (struct of13::ofp_experimenter_header*) buffer;
     OFMsg::unpack(buffer);
@@ -267,7 +266,7 @@ uint8_t* FeaturesRequest::pack() {
     return buffer;
 }
 
-of_error FeaturesRequest::unpack(uint8_t *buffer) {
+of_error FeaturesRequest::unpack(const uint8_t *buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -312,7 +311,7 @@ uint8_t* FeaturesReply::pack() {
     return buffer;
 }
 
-of_error FeaturesReply::unpack(uint8_t *buffer) {
+of_error FeaturesReply::unpack(const uint8_t* buffer) {
     struct of13::ofp_switch_features *fr =
         (struct of13::ofp_switch_features *) buffer;
     OFMsg::unpack(buffer);
@@ -341,7 +340,7 @@ uint8_t* GetConfigRequest::pack() {
     return buffer;
 }
 
-of_error GetConfigRequest::unpack(uint8_t *buffer) {
+of_error GetConfigRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -406,7 +405,7 @@ uint8_t* PacketOut::pack() {
     return buffer;
 }
 
-of_error PacketOut::unpack(uint8_t *buffer) {
+of_error PacketOut::unpack(const uint8_t* buffer) {
     struct of13::ofp_packet_out *po = (struct of13::ofp_packet_out*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct of13::ofp_packet_out)) {
@@ -415,8 +414,9 @@ of_error PacketOut::unpack(uint8_t *buffer) {
     this->buffer_id_ = ntoh32(po->buffer_id);
     this->in_port_ = ntoh32(po->in_port);
     this->actions_len_ = ntoh16(po->actions_len);
+    this->actions_.length(this->actions_len_);
     size_t len = this->actions_len_;
-    uint8_t * p = buffer + sizeof(struct of13::ofp_packet_out);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_packet_out);
     this->actions_.length(len);
     this->actions_.unpack13(p);
     len = this->length_
@@ -446,7 +446,7 @@ PacketIn::PacketIn(uint32_t xid, uint32_t buffer_id, uint16_t total_len,
 
 uint16_t PacketIn::length() {
     return sizeof(struct of13::ofp_packet_in) - sizeof(struct of13::ofp_match)
-        + ROUND_UP(this->match_.length(), 8) + this->data_len_;
+        + ROUND_UP(this->match_.length(), 8) + this->data_len_ + 2;
 }
 
 bool PacketIn::operator==(const PacketIn &other) const {
@@ -462,9 +462,7 @@ bool PacketIn::operator!=(const PacketIn &other) const {
 uint8_t* PacketIn::pack() {
     this->length_ = length();
     uint8_t* buffer = OFMsg::pack();
-    size_t padding = ROUND_UP(
-        sizeof(struct of13::ofp_packet_in) - 4 + this->match_.length(), 8)
-        - (sizeof(struct of13::ofp_packet_in) - 4 + this->match_.length());
+    size_t padding = ROUND_UP(this->match_.length(), 8) - this->match_.length();
     struct of13::ofp_packet_in *pi = (struct of13::ofp_packet_in*) buffer;
     pi->buffer_id = hton32(this->buffer_id_);
     pi->total_len = hton16(this->total_len_);
@@ -482,7 +480,7 @@ uint8_t* PacketIn::pack() {
     return buffer;
 }
 
-of_error PacketIn::unpack(uint8_t *buffer) {
+of_error PacketIn::unpack(const uint8_t* buffer) {
     struct of13::ofp_packet_in *pi = (struct of13::ofp_packet_in*) buffer;
     OFMsg::unpack(buffer);
     this->buffer_id_ = ntoh32(pi->buffer_id);
@@ -490,7 +488,7 @@ of_error PacketIn::unpack(uint8_t *buffer) {
     this->reason_ = pi->reason;
     this->table_id_ = pi->table_id;
     this->cookie_ = ntoh64(pi->cookie);
-    uint8_t *p = buffer
+    const uint8_t* p = buffer
         + (sizeof(struct of13::ofp_packet_in) - sizeof(struct of13::ofp_match));
     this->match_.unpack(p);
     p += ROUND_UP(this->match_.length(), 8);
@@ -539,7 +537,7 @@ FlowMod::FlowMod(uint32_t xid, uint64_t cookie, uint64_t cookie_mask,
     ;
 }
 
-uint16_t FlowMod::length() {
+uint16_t FlowMod::length() const {
     return sizeof(struct of13::ofp_flow_mod) - sizeof(struct of13::ofp_match)
         + ROUND_UP(this->match_.length(), 8) + this->instructions_.length();
 }
@@ -585,7 +583,7 @@ uint8_t* FlowMod::pack() {
     return buffer;
 }
 
-of_error FlowMod::unpack(uint8_t *buffer) {
+of_error FlowMod::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     of_error err;
     struct of13::ofp_flow_mod *fm = (struct of13::ofp_flow_mod*) buffer;
@@ -603,7 +601,7 @@ of_error FlowMod::unpack(uint8_t *buffer) {
     this->out_port_ = ntoh32(fm->out_port);
     this->out_group_ = ntoh32(fm->out_group);
     this->flags_ = ntoh16(fm->flags);
-    uint8_t *p = buffer
+    const uint8_t* p = buffer
         + (sizeof(struct of13::ofp_flow_mod) - sizeof(struct of13::ofp_match));
     err = this->match_.unpack(p);
     if (err) {
@@ -720,7 +718,7 @@ uint8_t* FlowRemoved::pack() {
     return buffer;
 }
 
-of_error FlowRemoved::unpack(uint8_t *buffer) {
+of_error FlowRemoved::unpack(const uint8_t* buffer) {
     struct of13::ofp_flow_removed *fr = (struct of13::ofp_flow_removed*) buffer;
     OFMsg::unpack(buffer);
     this->cookie_ = ntoh64(fr->cookie);
@@ -733,7 +731,7 @@ of_error FlowRemoved::unpack(uint8_t *buffer) {
     this->hard_timeout_ = ntoh32(fr->hard_timeout);
     this->packet_count_ = ntoh64(fr->packet_count);
     this->byte_count_ = ntoh64(fr->byte_count);
-    uint8_t *p = buffer
+    const uint8_t* p = buffer
         + (sizeof(struct of13::ofp_flow_removed)
             - sizeof(struct of13::ofp_match));
     this->match_.unpack(p);
@@ -769,7 +767,7 @@ uint8_t* PortStatus::pack() {
     return buffer;
 }
 
-of_error PortStatus::unpack(uint8_t *buffer) {
+of_error PortStatus::unpack(const uint8_t* buffer) {
     struct of13::ofp_port_status *ps = (struct of13::ofp_port_status *) buffer;
     OFMsg::unpack(buffer);
     this->reason_ = ps->reason;
@@ -813,7 +811,7 @@ uint8_t* PortMod::pack() {
     return buffer;
 }
 
-of_error PortMod::unpack(uint8_t* buffer) {
+of_error PortMod::unpack(const uint8_t* buffer) {
     struct of13::ofp_port_mod *pm = (struct of13::ofp_port_mod *) buffer;
     if (pm->header.length < sizeof(struct of13::ofp_port_mod)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -897,7 +895,7 @@ uint8_t* GroupMod::pack() {
     return buffer;
 }
 
-of_error GroupMod::unpack(uint8_t *buffer) {
+of_error GroupMod::unpack(const uint8_t* buffer) {
     struct of13::ofp_group_mod *gm = (struct of13::ofp_group_mod*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct of13::ofp_group_mod)) {
@@ -907,7 +905,7 @@ of_error GroupMod::unpack(uint8_t *buffer) {
     this->group_type_ = gm->type;
     this->group_id_ = ntoh32(gm->group_id);
     size_t len = this->length_ - sizeof(struct ofp_group_mod);
-    uint8_t *p = buffer + sizeof(struct ofp_group_mod);
+    const uint8_t* p = buffer + sizeof(struct ofp_group_mod);
     while (len) {
         Bucket bucket;
         bucket.unpack(p);
@@ -948,7 +946,7 @@ uint8_t* TableMod::pack() {
     return buffer;
 }
 
-of_error TableMod::unpack(uint8_t *buffer) {
+of_error TableMod::unpack(const uint8_t* buffer) {
     struct of13::ofp_table_mod *tm = (struct of13::ofp_table_mod*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct of13::ofp_table_mod)) {
@@ -997,7 +995,7 @@ uint8_t* MultipartRequest::pack() {
     return buffer;
 }
 
-of_error MultipartRequest::unpack(uint8_t *buffer) {
+of_error MultipartRequest::unpack(const uint8_t* buffer) {
     struct of13::ofp_multipart_request * mr =
         (struct of13::ofp_multipart_request *) buffer;
     OFMsg::unpack(buffer);
@@ -1049,7 +1047,7 @@ uint8_t* MultipartReply::pack() {
     return buffer;
 }
 
-of_error MultipartReply::unpack(uint8_t *buffer) {
+of_error MultipartReply::unpack(const uint8_t* buffer) {
     struct of13::ofp_multipart_reply * mr =
         (struct of13::ofp_multipart_reply *) buffer;
     OFMsg::unpack(buffer);
@@ -1071,7 +1069,7 @@ uint8_t* MultipartRequestDesc::pack() {
     return buffer;
 }
 
-of_error MultipartRequestDesc::unpack(uint8_t *buffer) {
+of_error MultipartRequestDesc::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
@@ -1110,7 +1108,7 @@ uint8_t* MultipartReplyDesc::pack() {
     return buffer;
 }
 
-of_error MultipartReplyDesc::unpack(uint8_t *buffer) {
+of_error MultipartReplyDesc::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     this->desc_.unpack(buffer + sizeof(struct of13::ofp_multipart_reply));
     return 0;
@@ -1209,7 +1207,7 @@ uint8_t* MultipartRequestFlow::pack() {
     return buffer;
 }
 
-of_error MultipartRequestFlow::unpack(uint8_t *buffer) {
+of_error MultipartRequestFlow::unpack(const uint8_t* buffer) {
     struct of13::ofp_flow_stats_request *fs =
         (struct of13::ofp_flow_stats_request*) (buffer
             + sizeof(struct of13::ofp_multipart_request));
@@ -1224,7 +1222,7 @@ of_error MultipartRequestFlow::unpack(uint8_t *buffer) {
     this->out_group_ = ntoh32(fs->out_group);
     this->cookie_ = ntoh64(fs->cookie);
     this->cookie_mask_ = ntoh64(fs->cookie_mask);
-    uint8_t *p = buffer
+    const uint8_t* p = buffer
         + (sizeof(struct of13::ofp_multipart_request)
             + sizeof(struct of13::ofp_flow_stats_request)
             - sizeof(struct of13::ofp_match));
@@ -1272,10 +1270,10 @@ uint8_t* MultipartReplyFlow::pack() {
     return buffer;
 }
 
-of_error MultipartReplyFlow::unpack(uint8_t *buffer) {
+of_error MultipartReplyFlow::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     size_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len) {
         of13::FlowStats stat;
         stat.unpack(p);
@@ -1391,7 +1389,7 @@ uint8_t* MultipartRequestAggregate::pack() {
     return buffer;
 }
 
-of_error MultipartRequestAggregate::unpack(uint8_t *buffer) {
+of_error MultipartRequestAggregate::unpack(const uint8_t* buffer) {
     struct of13::ofp_aggregate_stats_request *fs =
         (struct of13::ofp_aggregate_stats_request*) (buffer
             + sizeof(struct of13::ofp_multipart_request));
@@ -1406,7 +1404,7 @@ of_error MultipartRequestAggregate::unpack(uint8_t *buffer) {
     this->out_group_ = ntoh32(fs->out_group);
     this->cookie_ = ntoh64(fs->cookie);
     this->cookie_mask_ = ntoh64(fs->cookie_mask);
-    uint8_t *p = buffer
+    const uint8_t* p = buffer
         + (sizeof(struct of13::ofp_multipart_request)
             + sizeof(struct of13::ofp_aggregate_stats_request)
             - sizeof(struct of13::ofp_match));
@@ -1452,7 +1450,7 @@ uint8_t* MultipartReplyAggregate::pack() {
     return buffer;
 }
 
-of_error MultipartReplyAggregate::unpack(uint8_t *buffer) {
+of_error MultipartReplyAggregate::unpack(const uint8_t* buffer) {
     struct of13::ofp_aggregate_stats_reply *ar =
         (struct of13::ofp_aggregate_stats_reply*) (buffer
             + sizeof(struct of13::ofp_multipart_reply));
@@ -1476,7 +1474,7 @@ uint8_t* MultipartRequestTable::pack() {
     return buffer;
 }
 
-of_error MultipartRequestTable::unpack(uint8_t *buffer) {
+of_error MultipartRequestTable::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
@@ -1516,10 +1514,10 @@ uint8_t* MultipartReplyTable::pack() {
     return buffer;
 }
 
-of_error MultipartReplyTable::unpack(uint8_t *buffer) {
+of_error MultipartReplyTable::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_request);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_request);
     while (len > 0) {
         TableStats stat;
         stat.unpack(p);
@@ -1576,7 +1574,7 @@ uint8_t* MultipartRequestPortStats::pack() {
     return buffer;
 }
 
-of_error MultipartRequestPortStats::unpack(uint8_t *buffer) {
+of_error MultipartRequestPortStats::unpack(const uint8_t* buffer) {
     struct of13::ofp_port_stats_request *ps =
         (struct of13::ofp_port_stats_request *) (buffer
             + sizeof(struct of13::ofp_multipart_request));
@@ -1628,10 +1626,10 @@ uint8_t* MultipartReplyPortStats::pack() {
     return buffer;
 }
 
-of_error MultipartReplyPortStats::unpack(uint8_t *buffer) {
+of_error MultipartReplyPortStats::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_request);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_request);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_request);
     while (len > 0) {
         of13::PortStats stat;
         stat.unpack(p);
@@ -1688,7 +1686,7 @@ uint8_t* MultipartRequestQueue::pack() {
     return buffer;
 }
 
-of_error MultipartRequestQueue::unpack(uint8_t *buffer) {
+of_error MultipartRequestQueue::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_stats_request* qs =
         (of13::ofp_queue_stats_request*) (buffer
             + sizeof(struct of13::ofp_multipart_request));
@@ -1738,10 +1736,10 @@ uint8_t* MultipartReplyQueue::pack() {
     return buffer;
 }
 
-of_error MultipartReplyQueue::unpack(uint8_t *buffer) {
+of_error MultipartReplyQueue::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len > 0) {
         of13::QueueStats stat;
         stat.unpack(p);
@@ -1796,7 +1794,7 @@ uint8_t* MultipartRequestGroup::pack() {
     return buffer;
 }
 
-of_error MultipartRequestGroup::unpack(uint8_t *buffer) {
+of_error MultipartRequestGroup::unpack(const uint8_t* buffer) {
     struct of13::ofp_group_stats_request* gs =
         (of13::ofp_group_stats_request*) (buffer
             + sizeof(struct of13::ofp_multipart_request));
@@ -1845,10 +1843,10 @@ uint8_t* MultipartReplyGroup::pack() {
     return buffer;
 }
 
-of_error MultipartReplyGroup::unpack(uint8_t *buffer) {
+of_error MultipartReplyGroup::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len > 0) {
         of13::GroupStats stat;
         stat.unpack(p);
@@ -1893,7 +1891,7 @@ uint8_t* MultipartRequestGroupDesc::pack() {
     return buffer;
 }
 
-of_error MultipartRequestGroupDesc::unpack(uint8_t *buffer) {
+of_error MultipartRequestGroupDesc::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
@@ -1934,10 +1932,10 @@ uint8_t* MultipartReplyGroupDesc::pack() {
     return buffer;
 }
 
-of_error MultipartReplyGroupDesc::unpack(uint8_t *buffer) {
+of_error MultipartReplyGroupDesc::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len > 0) {
         of13::GroupDesc desc;
         desc.unpack(p);
@@ -1982,12 +1980,13 @@ uint8_t* MultipartRequestGroupFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartRequestGroupFeatures::unpack(uint8_t *buffer) {
+of_error MultipartRequestGroupFeatures::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
 MultipartReplyGroupFeatures::MultipartReplyGroupFeatures()
     : MultipartReply(OFPMP_GROUP_FEATURES) {
+    this->length_ += sizeof(struct of13::ofp_group_features);
 }
 
 MultipartReplyGroupFeatures::MultipartReplyGroupFeatures(uint32_t xid,
@@ -2015,7 +2014,7 @@ uint8_t* MultipartReplyGroupFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartReplyGroupFeatures::unpack(uint8_t *buffer) {
+of_error MultipartReplyGroupFeatures::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     this->features_.unpack(buffer + sizeof(struct of13::ofp_multipart_reply));
     return 0;
@@ -2054,7 +2053,7 @@ uint8_t* MultipartRequestMeter::pack() {
     return buffer;
 }
 
-of_error MultipartRequestMeter::unpack(uint8_t *buffer) {
+of_error MultipartRequestMeter::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_multipart_request *mr =
         (struct of13::ofp_meter_multipart_request *) (buffer
             + sizeof(struct of13::ofp_multipart_reply));
@@ -2103,10 +2102,10 @@ uint8_t* MultipartReplyMeter::pack() {
     return buffer;
 }
 
-of_error MultipartReplyMeter::unpack(uint8_t *buffer) {
+of_error MultipartReplyMeter::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     int32_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len > 0) {
         of13::MeterStats stat;
         stat.unpack(p);
@@ -2170,7 +2169,7 @@ uint8_t* MultipartRequestMeterConfig::pack() {
     return buffer;
 }
 
-of_error MultipartRequestMeterConfig::unpack(uint8_t *buffer) {
+of_error MultipartRequestMeterConfig::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_multipart_request *mr =
         (struct of13::ofp_meter_multipart_request *) (buffer
             + sizeof(struct of13::ofp_multipart_reply));
@@ -2222,10 +2221,10 @@ uint8_t* MultipartReplyMeterConfig::pack() {
     return buffer;
 }
 
-of_error MultipartReplyMeterConfig::unpack(uint8_t *buffer) {
+of_error MultipartReplyMeterConfig::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     size_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len) {
         MeterConfig conf;
         conf.unpack(p);
@@ -2270,12 +2269,13 @@ uint8_t* MultipartRequestMeterFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartRequestMeterFeatures::unpack(uint8_t *buffer) {
+of_error MultipartRequestMeterFeatures::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
 MultipartReplyMeterFeatures::MultipartReplyMeterFeatures()
     : MultipartReply(OFPMP_METER_FEATURES) {
+    this->length_ += sizeof(struct of13::ofp_meter_features);
 }
 
 MultipartReplyMeterFeatures::MultipartReplyMeterFeatures(uint32_t xid,
@@ -2304,7 +2304,7 @@ uint8_t* MultipartReplyMeterFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartReplyMeterFeatures::unpack(uint8_t *buffer) {
+of_error MultipartReplyMeterFeatures::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     this->meter_features_.unpack(
         buffer + sizeof(struct of13::ofp_multipart_reply));
@@ -2356,10 +2356,10 @@ uint8_t* MultipartRequestTableFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartRequestTableFeatures::unpack(uint8_t *buffer) {
+of_error MultipartRequestTableFeatures::unpack(const uint8_t* buffer) {
     MultipartRequest::unpack(buffer);
     size_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len) {
         TableFeatures features;
         features.unpack(p);
@@ -2433,10 +2433,10 @@ uint8_t* MultipartReplyTableFeatures::pack() {
     return buffer;
 }
 
-of_error MultipartReplyTableFeatures::unpack(uint8_t *buffer) {
+of_error MultipartReplyTableFeatures::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
     size_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     while (len) {
         TableFeatures features;
         features.unpack(p);
@@ -2479,7 +2479,7 @@ uint8_t* MultipartRequestPortDescription::pack() {
     return buffer;
 }
 
-of_error MultipartRequestPortDescription::unpack(uint8_t *buffer) {
+of_error MultipartRequestPortDescription::unpack(const uint8_t* buffer) {
     return MultipartRequest::unpack(buffer);
 }
 
@@ -2521,9 +2521,9 @@ uint8_t* MultipartReplyPortDescription::pack() {
     return buffer;
 }
 
-of_error MultipartReplyPortDescription::unpack(uint8_t *buffer) {
+of_error MultipartReplyPortDescription::unpack(const uint8_t* buffer) {
     MultipartReply::unpack(buffer);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_multipart_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_multipart_reply);
     size_t len = this->length_ - sizeof(struct of13::ofp_multipart_reply);
     while (len) {
         of13::Port port;
@@ -2579,7 +2579,7 @@ uint8_t* MultipartRequestExperimenter::pack() {
     return buffer;
 }
 
-of_error MultipartRequestExperimenter::unpack(uint8_t *buffer) {
+of_error MultipartRequestExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_experimenter_multipart_header *em =
         (struct of13::ofp_experimenter_multipart_header*) buffer;
     MultipartRequest::unpack(buffer);
@@ -2622,7 +2622,7 @@ uint8_t* MultipartReplyExperimenter::pack() {
     return buffer;
 }
 
-of_error MultipartReplyExperimenter::unpack(uint8_t *buffer) {
+of_error MultipartReplyExperimenter::unpack(const uint8_t* buffer) {
     struct of13::ofp_experimenter_multipart_header *em =
         (struct of13::ofp_experimenter_multipart_header*) buffer;
     MultipartReply::unpack(buffer);
@@ -2666,7 +2666,7 @@ uint8_t* QueueGetConfigRequest::pack() {
     return buffer;
 }
 
-of_error QueueGetConfigRequest::unpack(uint8_t *buffer) {
+of_error QueueGetConfigRequest::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_get_config_request * qc =
         (struct of13::ofp_queue_get_config_request*) buffer;
     OFMsg::unpack(buffer);
@@ -2721,12 +2721,12 @@ uint8_t* QueueGetConfigReply::pack() {
     return buffer;
 }
 
-of_error QueueGetConfigReply::unpack(uint8_t *buffer) {
+of_error QueueGetConfigReply::unpack(const uint8_t* buffer) {
     struct of13::ofp_queue_get_config_reply *qr =
         (struct of13::ofp_queue_get_config_reply *) buffer;
     OFMsg::unpack(buffer);
     this->port_ = ntoh32(qr->port);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_queue_get_config_reply);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_queue_get_config_reply);
     size_t len = this->length_
         - sizeof(struct of13::ofp_queue_get_config_reply);
     while (len) {
@@ -2770,7 +2770,7 @@ uint8_t* BarrierRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error BarrierRequest::unpack(uint8_t *buffer) {
+of_error BarrierRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -2790,7 +2790,7 @@ uint8_t* BarrierReply::pack() {
     return OFMsg::pack();
 }
 
-of_error BarrierReply::unpack(uint8_t *buffer) {
+of_error BarrierReply::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     return 0;
 }
@@ -2825,7 +2825,7 @@ uint8_t* GetAsyncRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error GetAsyncRequest::unpack(uint8_t *buffer) {
+of_error GetAsyncRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of13::OFPET_BAD_REQUEST, of13::OFPBRC_BAD_LEN);
@@ -2911,7 +2911,7 @@ uint8_t* MeterMod::pack() {
     return buffer;
 }
 
-of_error MeterMod::unpack(uint8_t *buffer) {
+of_error MeterMod::unpack(const uint8_t* buffer) {
     struct of13::ofp_meter_mod *mm = (struct of13::ofp_meter_mod *) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(of13::ofp_meter_mod)) {
@@ -2920,7 +2920,7 @@ of_error MeterMod::unpack(uint8_t *buffer) {
     this->command_ = ntoh16(mm->command);
     this->flags_ = ntoh16(mm->flags);
     this->meter_id_ = ntoh32(mm->meter_id);
-    uint8_t *p = buffer + sizeof(struct of13::ofp_meter_mod);
+    const uint8_t* p = buffer + sizeof(struct of13::ofp_meter_mod);
     this->bands_.length(this->length_ - sizeof(struct of13::ofp_meter_mod));
     this->bands_.unpack(p);
     return 0;

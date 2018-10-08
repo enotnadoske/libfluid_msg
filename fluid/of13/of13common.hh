@@ -52,7 +52,7 @@ public:
     bool operator==(const HelloElemVersionBitmap &other) const;
     bool operator!=(const HelloElemVersionBitmap &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t *data);
+    of_error unpack(const uint8_t* data);
     std::list<uint32_t> bitmaps() {
         return this->bitmaps_;
     }
@@ -73,19 +73,18 @@ public:
         uint32_t config, uint32_t state, uint32_t curr, uint32_t advertised,
         uint32_t supported, uint32_t peer, uint32_t curr_speed,
         uint32_t max_speed);
-    ~Port() {
-    }
+    ~Port() {}
     bool operator==(const Port &other) const;
     bool operator!=(const Port &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint32_t port_no() {
+    of_error unpack(const uint8_t* data);
+    uint32_t port_no() const {
         return this->port_no_;
     }
-    uint32_t curr_speed() {
+    uint32_t curr_speed() const {
         return this->curr_speed_;
     }
-    uint32_t max_speed() {
+    uint32_t max_speed() const {
         return this->max_speed_;
     }
     void port_no(uint32_t port_no) {
@@ -112,7 +111,7 @@ public:
         return new QueuePropMinRate(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
 };
 
 class QueuePropMaxRate: public QueuePropRate {
@@ -128,7 +127,7 @@ public:
         return new QueuePropMaxRate(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
 };
 
 class QueueExperimenter: public QueueProperty {
@@ -144,7 +143,7 @@ public:
         return new QueueExperimenter(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint32_t get_experimenter() {
         return this->experimenter_;
     }
@@ -166,7 +165,7 @@ public:
     bool operator==(const PacketQueue &other) const;
     bool operator!=(const PacketQueue &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint32_t port() {
         return this->port_;
     }
@@ -192,7 +191,7 @@ public:
     bool operator==(const Bucket &other) const;
     bool operator!=(const Bucket &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint16_t len() {
         return this->length_;
     }
@@ -233,26 +232,25 @@ public:
         uint16_t priority, uint16_t idle_timeout, uint16_t hard_timeout,
         uint16_t flags, uint64_t cookie, uint64_t packet_count,
         uint64_t byte_count);
-    ~FlowStats() {
-    }
+    ~FlowStats() {}
     bool operator==(const FlowStats &other) const;
     bool operator!=(const FlowStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint16_t get_flags() {
+    of_error unpack(const uint8_t* data);
+    uint16_t get_flags() const {
         return this->flags_;
     }
     void set_flags(uint16_t flags) {
         this->flags_ = flags;
     }
     void match(of13::Match match);
-    of13::Match match() {
+    of13::Match match() const {
         return this->match_;
     }
     OXMTLV * get_oxm_field(uint8_t field);
     void instructions(InstructionSet instructions);
     void add_instruction(Instruction* inst);
-    InstructionSet instructions() {
+    InstructionSet instructions() const {
         return this->instructions_;
     }
 };
@@ -262,10 +260,9 @@ public:
     TableStats();
     TableStats(uint8_t table_id, uint32_t active_count, uint64_t lookup_count,
         uint64_t matched_count);
-    ~TableStats() {
-    }
+    ~TableStats() {}
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
 };
 
 class PortStats: public PortStatsCommon {
@@ -278,19 +275,18 @@ public:
     PortStats(uint32_t port_no, struct port_rx_tx_stats tx_stats,
         struct port_err_stats err_stats, uint64_t collisions,
         uint32_t duration_sec, uint32_t duration_nsec);
-    ~PortStats() {
-    }
+    ~PortStats() {}
     bool operator==(const PortStats &other) const;
     bool operator!=(const PortStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint32_t port_no() {
+    of_error unpack(const uint8_t* data);
+    uint32_t port_no() const {
         return this->port_no_;
     }
-    uint32_t duration_sec() {
+    uint32_t duration_sec() const {
         return this->duration_sec_;
     }
-    uint32_t duration_nsec() {
+    uint32_t duration_nsec() const {
         return this->duration_nsec_;
     }
     void port_no(uint32_t port_no) {
@@ -314,19 +310,18 @@ public:
     QueueStats(uint32_t port_no, uint32_t queue_id, uint64_t tx_bytes,
         uint64_t tx_packets, uint64_t tx_errors, uint32_t duration_sec,
         uint32_t duration_nsec);
-    ~QueueStats() {
-    }
+    ~QueueStats() {}
     bool operator==(const QueueStats &other) const;
     bool operator!=(const QueueStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint32_t port_no() {
+    of_error unpack(const uint8_t* data);
+    uint32_t port_no() const {
         return this->port_no_;
     }
-    uint32_t duration_sec() {
+    uint32_t duration_sec() const {
         return this->duration_sec_;
     }
-    uint32_t duration_nsec() {
+    uint32_t duration_nsec() const {
         return this->duration_nsec_;
     }
     void port_no(uint32_t port_no) {
@@ -347,16 +342,15 @@ private:
 public:
     BucketStats();
     BucketStats(uint64_t packet_count, uint64_t byte_count);
-    ~BucketStats() {
-    }
+    ~BucketStats() {}
     bool operator==(const BucketStats &other) const;
     bool operator!=(const BucketStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint64_t packet_count() {
+    of_error unpack(const uint8_t* data);
+    uint64_t packet_count() const {
         return this->packet_count_;
     }
-    uint64_t byte_count() {
+    uint64_t byte_count() const {
         return this->byte_count_;
     }
 };
@@ -380,34 +374,33 @@ public:
     GroupStats(uint32_t group_id, uint32_t ref_count, uint64_t packet_count,
         uint64_t byte_count, uint32_t duration_sec, uint32_t duration_nsec,
         std::vector<BucketStats> bucket_stats);
-    ~GroupStats() {
-    }
+    ~GroupStats() {}
     bool operator==(const GroupStats &other) const;
     bool operator!=(const GroupStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
-    uint16_t length() {
+    of_error unpack(const uint8_t* data);
+    uint16_t length() const {
         return this->length_;
     }
-    uint32_t group_id() {
+    uint32_t group_id() const {
         return this->group_id_;
     }
-    uint32_t ref_count() {
+    uint32_t ref_count() const {
         return this->ref_count_;
     }
-    uint64_t packet_count() {
+    uint64_t packet_count() const {
         return this->packet_count_;
     }
-    uint64_t byte_count() {
+    uint64_t byte_count() const {
         return this->byte_count_;
     }
-    uint32_t duration_sec() {
+    uint32_t duration_sec() const {
         return this->duration_sec_;
     }
-    uint32_t duration_nsec() {
+    uint32_t duration_nsec() const {
         return this->duration_nsec_;
     }
-    std::vector<BucketStats> bucket_stats(){
+    std::vector<BucketStats> bucket_stats() const {
         return this->bucket_stats_;
     }
     void group_id(uint32_t group_id) {
@@ -450,7 +443,7 @@ public:
     bool operator==(const GroupDesc &other) const;
     bool operator!=(const GroupDesc &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint16_t length() {
         return this->length_;
     }
@@ -490,7 +483,7 @@ public:
     bool operator==(const GroupFeatures &other) const;
     bool operator!=(const GroupFeatures &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint32_t types() {
         return this->types_;
     }
@@ -537,7 +530,7 @@ public:
         return new TableFeatureProp(*this);
     }
     virtual size_t pack(uint8_t* buffer);
-    virtual of_error unpack(uint8_t* buffer);
+    virtual of_error unpack(const uint8_t* data);
     uint16_t type() {
         return this->type_;
     }
@@ -578,7 +571,7 @@ public:
         return new TableFeaturePropInstruction(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     std::vector<Instruction> instruction_ids() {
         return this->instruction_ids_;
     }
@@ -604,7 +597,7 @@ public:
         return new TableFeaturePropNextTables(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     std::vector<uint8_t> next_table_ids() {
         return this->next_table_ids_;
     }
@@ -629,7 +622,7 @@ public:
         return new TableFeaturePropActions(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     std::vector<Action> action_ids() {
         return this->action_ids_;
     }
@@ -654,7 +647,7 @@ public:
         return new TableFeaturePropOXM(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     void oxm_ids(std::vector<uint32_t> oxm_ids);
 };
 
@@ -675,7 +668,7 @@ public:
     }
     virtual bool equals(const TableFeatureProp & other);
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
 };
 
 class TablePropertiesList {
@@ -693,7 +686,7 @@ public:
     bool operator==(const TablePropertiesList &other) const;
     bool operator!=(const TablePropertiesList &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     friend void swap(TablePropertiesList& first, TablePropertiesList& second);
     uint16_t length() {
         return this->length_;
@@ -729,7 +722,7 @@ public:
     bool operator==(const TableFeatures &other) const;
     bool operator!=(const TableFeatures &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* data);
     uint16_t length();
     uint8_t table_id() {
         return this->table_id_;

@@ -31,7 +31,7 @@ size_t MatchHeader::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error MatchHeader::unpack(uint8_t *buffer) {
+of_error MatchHeader::unpack(const uint8_t *buffer) {
     struct of13::ofp_match *m = (struct of13::ofp_match*) buffer;
     this->type_ = ntoh16(m->type);
     this->length_ = ntoh16(m->length);
@@ -95,7 +95,7 @@ size_t OXMTLV::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error OXMTLV::unpack(uint8_t *buffer) {
+of_error OXMTLV::unpack(const uint8_t *buffer) {
     uint32_t header = ntoh32(*((uint32_t*) buffer));
     this->class__ = oxm_class(header);
     this->field_ = oxm_field(header);
@@ -165,7 +165,7 @@ size_t InPort::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error InPort::unpack(uint8_t *buffer) {
+of_error InPort::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh32(*((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -209,7 +209,7 @@ size_t InPhyPort::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error InPhyPort::unpack(uint8_t *buffer) {
+of_error InPhyPort::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh32(*((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -238,7 +238,6 @@ Metadata::Metadata(uint64_t value, uint64_t mask)
 }
 
 bool Metadata::equals(const OXMTLV &other) {
-
     if (const Metadata * field = dynamic_cast<const Metadata *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -255,7 +254,6 @@ OXMTLV& Metadata::operator=(const OXMTLV& field) {
     this->mask_ = meta.mask_;
     return *this;
 }
-;
 
 size_t Metadata::pack(uint8_t *buffer) {
     OXMTLV::pack(buffer);
@@ -270,7 +268,7 @@ size_t Metadata::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error Metadata::unpack(uint8_t *buffer) {
+of_error Metadata::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh64(*((uint64_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
@@ -282,7 +280,8 @@ of_error Metadata::unpack(uint8_t *buffer) {
 }
 
 EthDst::EthDst()
-      : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_DST, false,
+      : mask_("ff:ff:ff:ff:ff:ff"),
+        OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_DST, false,
           OFP_ETH_ALEN) {
     create_oxm_req(0, 0, 0, 0);
 }
@@ -335,7 +334,7 @@ size_t EthDst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error EthDst::unpack(uint8_t *buffer) {
+of_error EthDst::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -349,7 +348,8 @@ of_error EthDst::unpack(uint8_t *buffer) {
 }
 
 EthSrc::EthSrc()
-    : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_SRC, false,
+    : mask_("ff:ff:ff:ff:ff:ff"),
+      OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_ETH_SRC, false,
           OFP_ETH_ALEN) {
     create_oxm_req(0, 0, 0, 0);
 }
@@ -402,7 +402,7 @@ size_t EthSrc::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error EthSrc::unpack(uint8_t *buffer) {
+of_error EthSrc::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -453,7 +453,7 @@ size_t EthType::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error EthType::unpack(uint8_t *buffer) {
+of_error EthType::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -514,7 +514,7 @@ size_t VLANVid::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error VLANVid::unpack(uint8_t *buffer) {
+of_error VLANVid::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
@@ -562,7 +562,7 @@ size_t VLANPcp::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error VLANPcp::unpack(uint8_t *buffer) {
+of_error VLANPcp::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -605,7 +605,7 @@ size_t IPDSCP::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPDSCP::unpack(uint8_t *buffer) {
+of_error IPDSCP::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -648,7 +648,7 @@ size_t IPECN::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPECN::unpack(uint8_t *buffer) {
+of_error IPECN::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -691,7 +691,7 @@ size_t IPProto::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPProto::unpack(uint8_t *buffer) {
+of_error IPProto::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *(buffer + of13::OFP_OXM_HEADER_LEN);
     return 0;
@@ -701,7 +701,7 @@ IPv4Src::IPv4Src()
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_SRC, false,
           of13::OFP_OXM_IPV4_LEN),
       value_((uint32_t) 0),
-      mask_((uint32_t) 0) {
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -709,8 +709,7 @@ IPv4Src::IPv4Src(IPAddress value)
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_SRC, false,
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
-      mask_((uint32_t) 0) {
-    // this->value_  = value;
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -719,13 +718,10 @@ IPv4Src::IPv4Src(IPAddress value, IPAddress mask)
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
       mask_(mask) {
-    // this->value_  = value;
-    // this->mask_  = mask;
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
 bool IPv4Src::equals(const OXMTLV &other) {
-
     if (const IPv4Src * field = dynamic_cast<const IPv4Src *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -742,7 +738,6 @@ OXMTLV& IPv4Src::operator=(const OXMTLV& field) {
     this->mask_ = src.mask_;
     return *this;
 }
-;
 
 size_t IPv4Src::pack(uint8_t *buffer) {
     OXMTLV::pack(buffer);
@@ -757,7 +752,7 @@ size_t IPv4Src::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv4Src::unpack(uint8_t *buffer) {
+of_error IPv4Src::unpack(const uint8_t *buffer) {
     uint32_t ip = *((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     OXMTLV::unpack(buffer);
     this->value_ = IPAddress(ip);
@@ -774,7 +769,7 @@ IPv4Dst::IPv4Dst()
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_DST, false,
           of13::OFP_OXM_IPV4_LEN),
       value_((uint32_t) 0),
-      mask_((uint32_t) 0) {
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -782,8 +777,7 @@ IPv4Dst::IPv4Dst(IPAddress value)
     : OXMTLV(of13::OFPXMC_OPENFLOW_BASIC, of13::OFPXMT_OFB_IPV4_DST, false,
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
-      mask_((uint32_t) 0) {
-    // this->value_  = value;
+      mask_((uint32_t) -1) {
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
@@ -792,13 +786,10 @@ IPv4Dst::IPv4Dst(IPAddress value, IPAddress mask)
           of13::OFP_OXM_IPV4_LEN),
       value_(value),
       mask_(mask) {
-    // this->value_  = value;
-    // this->mask_  = mask;
     create_oxm_req(0x0800, 0, 0, 0);
 }
 
 bool IPv4Dst::equals(const OXMTLV &other) {
-
     if (const IPv4Dst * field = dynamic_cast<const IPv4Dst *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -830,7 +821,7 @@ size_t IPv4Dst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv4Dst::unpack(uint8_t *buffer) {
+of_error IPv4Dst::unpack(const uint8_t *buffer) {
     uint32_t ip = *((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     OXMTLV::unpack(buffer);
     this->value_ = IPAddress(ip);
@@ -857,7 +848,6 @@ TCPSrc::TCPSrc(uint16_t value)
 }
 
 bool TCPSrc::equals(const OXMTLV &other) {
-
     if (const TCPSrc * field = dynamic_cast<const TCPSrc *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_));
     }
@@ -881,7 +871,7 @@ size_t TCPSrc::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error TCPSrc::unpack(uint8_t *buffer) {
+of_error TCPSrc::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -925,7 +915,7 @@ size_t TCPDst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error TCPDst::unpack(uint8_t *buffer) {
+of_error TCPDst::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -969,7 +959,7 @@ size_t UDPSrc::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error UDPSrc::unpack(uint8_t *buffer) {
+of_error UDPSrc::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -1013,7 +1003,7 @@ size_t UDPDst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error UDPDst::unpack(uint8_t *buffer) {
+of_error UDPDst::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -1057,7 +1047,7 @@ size_t SCTPSrc::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SCTPSrc::unpack(uint8_t *buffer) {
+of_error SCTPSrc::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -1101,7 +1091,7 @@ size_t SCTPDst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SCTPDst::unpack(uint8_t *buffer) {
+of_error SCTPDst::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -1144,7 +1134,7 @@ size_t ICMPv4Type::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ICMPv4Type::unpack(uint8_t *buffer) {
+of_error ICMPv4Type::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -1188,7 +1178,7 @@ size_t ICMPv4Code::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ICMPv4Code::unpack(uint8_t *buffer) {
+of_error ICMPv4Code::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -1208,7 +1198,6 @@ ARPOp::ARPOp(uint16_t value)
 }
 
 bool ARPOp::equals(const OXMTLV &other) {
-
     if (const ARPOp * field = dynamic_cast<const ARPOp *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_));
     }
@@ -1232,7 +1221,7 @@ size_t ARPOp::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ARPOp::unpack(uint8_t *buffer) {
+of_error ARPOp::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -1259,7 +1248,6 @@ ARPSPA::ARPSPA(IPAddress value, IPAddress mask)
 }
 
 bool ARPSPA::equals(const OXMTLV &other) {
-
     if (const ARPSPA * field = dynamic_cast<const ARPSPA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1291,7 +1279,7 @@ size_t ARPSPA::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ARPSPA::unpack(uint8_t *buffer) {
+of_error ARPSPA::unpack(const uint8_t *buffer) {
     uint32_t ip = *((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     OXMTLV::unpack(buffer);
     this->value_ = IPAddress(ip);
@@ -1326,7 +1314,6 @@ ARPTPA::ARPTPA(IPAddress value, IPAddress mask)
 }
 
 bool ARPTPA::equals(const OXMTLV &other) {
-
     if (const ARPTPA * field = dynamic_cast<const ARPTPA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1358,7 +1345,7 @@ size_t ARPTPA::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ARPTPA::unpack(uint8_t *buffer) {
+of_error ARPTPA::unpack(const uint8_t *buffer) {
     uint32_t ip = *((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     OXMTLV::unpack(buffer);
     this->value_ = IPAddress(ip);
@@ -1395,7 +1382,6 @@ ARPSHA::ARPSHA(EthAddress value, EthAddress mask)
 }
 
 bool ARPSHA::equals(const OXMTLV &other) {
-
     if (const ARPSHA * field = dynamic_cast<const ARPSHA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1426,7 +1412,7 @@ size_t ARPSHA::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ARPSHA::unpack(uint8_t *buffer) {
+of_error ARPSHA::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -1463,7 +1449,6 @@ ARPTHA::ARPTHA(EthAddress value, EthAddress mask)
 }
 
 bool ARPTHA::equals(const OXMTLV &other) {
-
     if (const ARPTHA * field = dynamic_cast<const ARPTHA *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1494,7 +1479,7 @@ size_t ARPTHA::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ARPTHA::unpack(uint8_t *buffer) {
+of_error ARPTHA::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -1529,7 +1514,6 @@ IPv6Src::IPv6Src(IPAddress value, IPAddress mask)
 }
 
 bool IPv6Src::equals(const OXMTLV &other) {
-
     if (const IPv6Src * field = dynamic_cast<const IPv6Src *>(&other)) {
         return ((OXMTLV::equals(other)) && (this->value_ == field->value_)
             && (this->has_mask_ ? this->mask_ == field->mask_ : true));
@@ -1560,7 +1544,7 @@ size_t IPv6Src::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6Src::unpack(uint8_t *buffer) {
+of_error IPv6Src::unpack(const uint8_t *buffer) {
     // uint8_t *ip = buffer + of13::OFP_OXM_HEADER_LEN;
     struct in6_addr *ip =
         (struct in6_addr *) (buffer + of13::OFP_OXM_HEADER_LEN);
@@ -1627,7 +1611,7 @@ size_t IPv6Dst::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6Dst::unpack(uint8_t *buffer) {
+of_error IPv6Dst::unpack(const uint8_t *buffer) {
     struct in6_addr *ip =
         (struct in6_addr *) (buffer + of13::OFP_OXM_HEADER_LEN);
     // uint8_t *ip = buffer + of13::OFP_OXM_HEADER_LEN;
@@ -1695,7 +1679,7 @@ size_t IPV6Flabel::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPV6Flabel::unpack(uint8_t *buffer) {
+of_error IPV6Flabel::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh32(*((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
@@ -1743,7 +1727,7 @@ size_t ICMPv6Type::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ICMPv6Type::unpack(uint8_t *buffer) {
+of_error ICMPv6Type::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -1786,7 +1770,7 @@ size_t ICMPv6Code::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ICMPv6Code::unpack(uint8_t *buffer) {
+of_error ICMPv6Code::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -1830,7 +1814,7 @@ size_t IPv6NDTarget::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6NDTarget::unpack(uint8_t *buffer) {
+of_error IPv6NDTarget::unpack(const uint8_t *buffer) {
     struct in6_addr *ip =
         (struct in6_addr *) (buffer + of13::OFP_OXM_HEADER_LEN);
     OXMTLV::unpack(buffer);
@@ -1876,7 +1860,7 @@ size_t IPv6NDTLL::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6NDTLL::unpack(uint8_t *buffer) {
+of_error IPv6NDTLL::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -1922,7 +1906,7 @@ size_t IPv6NDSLL::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6NDSLL::unpack(uint8_t *buffer) {
+of_error IPv6NDSLL::unpack(const uint8_t *buffer) {
     uint8_t v[OFP_ETH_ALEN];
     OXMTLV::unpack(buffer);
     memcpy(v, buffer + of13::OFP_OXM_HEADER_LEN, OFP_ETH_ALEN);
@@ -1968,7 +1952,7 @@ size_t MPLSLabel::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error MPLSLabel::unpack(uint8_t *buffer) {
+of_error MPLSLabel::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh32(*((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     return 0;
@@ -2011,7 +1995,7 @@ size_t MPLSTC::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error MPLSTC::unpack(uint8_t *buffer) {
+of_error MPLSTC::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -2054,7 +2038,7 @@ size_t MPLSBOS::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error MPLSBOS::unpack(uint8_t *buffer) {
+of_error MPLSBOS::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = *((uint8_t*) (buffer + of13::OFP_OXM_HEADER_LEN));
     return 0;
@@ -2116,7 +2100,7 @@ size_t PBBIsid::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error PBBIsid::unpack(uint8_t *buffer) {
+of_error PBBIsid::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh32(*((uint32_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
@@ -2182,9 +2166,9 @@ size_t TUNNELId::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error TUNNELId::unpack(uint8_t *buffer) {
+of_error TUNNELId::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
-    this->value_ = ntoh32(*((uint64_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
+    this->value_ = ntoh64(*((uint64_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
         size_t len = this->length_ / 2;
         this->mask_ = ntoh64(
@@ -2249,7 +2233,7 @@ size_t IPv6Exthdr::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error IPv6Exthdr::unpack(uint8_t *buffer) {
+of_error IPv6Exthdr::unpack(const uint8_t *buffer) {
     OXMTLV::unpack(buffer);
     this->value_ = ntoh16(*((uint16_t*) (buffer + of13::OFP_OXM_HEADER_LEN)));
     if (this->has_mask_) {
@@ -2459,10 +2443,10 @@ size_t Match::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error Match::unpack(uint8_t *buffer) {
+of_error Match::unpack(const uint8_t *buffer) {
     MatchHeader::unpack(buffer);
     size_t len = this->length_ - (sizeof(struct of13::ofp_match) - 4);
-    uint8_t * p = buffer + (sizeof(struct of13::ofp_match) - 4);
+    const uint8_t* p = buffer + (sizeof(struct of13::ofp_match) - 4);
     OXMTLV *oxm_tlv;
     while (len) {
         uint32_t header = ntoh32(*((uint32_t*) p));
@@ -2554,6 +2538,7 @@ void Match::add_oxm_field(OXMTLV &tlv) {
 }
 
 void Match::add_oxm_field(OXMTLV* tlv) {
+    if (not tlv) return;
     if (check_dup(tlv)) return;
     this->curr_tlvs_.push_back(tlv->field());
     this->oxm_tlvs_[tlv->field()] = tlv;

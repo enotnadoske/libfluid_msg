@@ -16,24 +16,23 @@ private:
 public:
     OutputAction();
     OutputAction(uint32_t port, uint16_t max_len);
-    ~OutputAction() {
-    }
+    ~OutputAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual OutputAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual OutputAction* clone() const {
         return new OutputAction(*this);
     }
-    uint32_t port() {
+    uint32_t port() const {
         return this->port_;
     }
     void port(uint32_t port) {
         this->port_ = port;
     }
-    uint16_t max_len() {
+    uint16_t max_len() const {
         return this->max_len_;
     }
     void max_len(uint16_t max_len) {
@@ -46,14 +45,13 @@ private:
     const uint16_t set_order_;
 public:
     CopyTTLOutAction();
-    ~CopyTTLOutAction() {
-    }
+    ~CopyTTLOutAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual CopyTTLOutAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual CopyTTLOutAction* clone() const {
         return new CopyTTLOutAction(*this);
     }
 };
@@ -63,14 +61,13 @@ private:
     const uint16_t set_order_;
 public:
     CopyTTLInAction();
-    ~CopyTTLInAction() {
-    }
+    ~CopyTTLInAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual CopyTTLInAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual CopyTTLInAction* clone() const {
         return new CopyTTLInAction(*this);
     }
 };
@@ -82,21 +79,20 @@ private:
 public:
     SetMPLSTTLAction();
     SetMPLSTTLAction(uint8_t mpls_ttl);
-    ~SetMPLSTTLAction() {
-    }
+    ~SetMPLSTTLAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint8_t mpls_ttl() {
         return this->mpls_ttl_;
     }
     void mpls_ttl(uint8_t mpls_ttl) {
         this->mpls_ttl_ = mpls_ttl;
     }
-    virtual SetMPLSTTLAction* clone() {
+    virtual SetMPLSTTLAction* clone() const {
         return new SetMPLSTTLAction(*this);
     }
 };
@@ -106,14 +102,13 @@ private:
     const uint16_t set_order_;
 public:
     DecMPLSTTLAction();
-    ~DecMPLSTTLAction() {
-    }
+    ~DecMPLSTTLAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual DecMPLSTTLAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual DecMPLSTTLAction* clone() const {
         return new DecMPLSTTLAction(*this);
     }
 };
@@ -125,18 +120,17 @@ private:
 public:
     PushVLANAction();
     PushVLANAction(uint16_t ethertype);
-    ~PushVLANAction() {
-    }
+    ~PushVLANAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PushVLANAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PushVLANAction* clone() const {
         return new PushVLANAction(*this);
     }
-    uint16_t ethertype() {
+    uint16_t ethertype() const {
         return this->ethertype_;
     }
     void ethertype(uint16_t ethertype) {
@@ -149,14 +143,13 @@ private:
     const uint16_t set_order_;
 public:
     PopVLANAction();
-    ~PopVLANAction() {
-    }
+    ~PopVLANAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PopVLANAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PopVLANAction* clone() const {
         return new PopVLANAction(*this);
     }
 };
@@ -168,18 +161,17 @@ private:
 public:
     PushMPLSAction();
     PushMPLSAction(uint16_t ethertype);
-    ~PushMPLSAction() {
-    }
+    ~PushMPLSAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PushMPLSAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PushMPLSAction* clone() const {
         return new PushMPLSAction(*this);
     }
-    uint16_t ethertype() {
+    uint16_t ethertype() const {
         return this->ethertype_;
     }
     void ethertype(uint16_t ethertype) {
@@ -194,15 +186,14 @@ private:
 public:
     PopMPLSAction();
     PopMPLSAction(uint16_t ethertype);
-    ~PopMPLSAction() {
-    }
+    ~PopMPLSAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PopMPLSAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PopMPLSAction* clone() const {
         return new PopMPLSAction(*this);
     }
     uint16_t ethertype() {
@@ -220,18 +211,17 @@ private:
 public:
     SetQueueAction();
     SetQueueAction(uint32_t queue_id);
-    ~SetQueueAction() {
-    }
+    ~SetQueueAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual SetQueueAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual SetQueueAction* clone() const {
         return new SetQueueAction(*this);
     }
-    uint32_t queue_id() {
+    uint32_t queue_id() const {
         return this->queue_id_;
     }
     void queue_id(uint32_t queue_id) {
@@ -246,18 +236,17 @@ private:
 public:
     GroupAction();
     GroupAction(uint32_t group_id);
-    ~GroupAction() {
-    }
+    ~GroupAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual GroupAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual GroupAction* clone() const {
         return new GroupAction(*this);
     }
-    uint32_t group_id() {
+    uint32_t group_id() const {
         return this->group_id_;
     }
     void group_id(uint32_t group_id) {
@@ -272,19 +261,17 @@ private:
 public:
     SetNWTTLAction();
     SetNWTTLAction(uint8_t nw_ttl);
-    ~SetNWTTLAction() {
-    }
-    ;
+    ~SetNWTTLAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual SetNWTTLAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual SetNWTTLAction* clone() const {
         return new SetNWTTLAction(*this);
     }
-    uint8_t nw_ttl() {
+    uint8_t nw_ttl() const {
         return this->nw_ttl_;
     }
     void nw_ttl(uint8_t nw_ttl) {
@@ -297,14 +284,13 @@ private:
     const uint16_t set_order_;
 public:
     DecNWTTLAction();
-    ~DecNWTTLAction() {
-    }
+    ~DecNWTTLAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual DecNWTTLAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual DecNWTTLAction* clone() const {
         return new DecNWTTLAction(*this);
     }
 };
@@ -323,12 +309,15 @@ public:
     uint16_t set_order() const {
         return this->set_order_;
     }
+    virtual uint16_t set_sub_order() const {
+	    return this->field_ ? this->field_->field() : 0;
+    }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual SetFieldAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual SetFieldAction* clone() const {
         return new SetFieldAction(*this);
     }
-    OXMTLV* field();
+    const OXMTLV* field() const;
     void field(OXMTLV* field);
     friend void swap(SetFieldAction& first, SetFieldAction& second);
 };
@@ -340,18 +329,17 @@ private:
 public:
     PushPBBAction();
     PushPBBAction(uint16_t ethertype);
-    ~PushPBBAction() {
-    }
+    ~PushPBBAction() {}
     virtual bool equals(const Action & other);
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PushPBBAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PushPBBAction* clone() const {
         return new PushPBBAction(*this);
     }
-    uint16_t ethertype() {
+    uint16_t ethertype() const {
         return this->ethertype_;
     }
     void ethertype(uint16_t ethertype) {
@@ -364,14 +352,13 @@ private:
     const uint16_t set_order_;
 public:
     PopPBBAction();
-    ~PopPBBAction() {
-    }
+    ~PopPBBAction() {}
     uint16_t set_order() const {
         return this->set_order_;
     }
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual PopPBBAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual PopPBBAction* clone() const {
         return new PopPBBAction(*this);
     }
 };
@@ -382,15 +369,14 @@ protected:
 public:
     ExperimenterAction();
     ExperimenterAction(uint32_t experimenter);
-    ~ExperimenterAction() {
-    }
+    ~ExperimenterAction() {}
     virtual bool equals(const Action & other);
     size_t pack(uint8_t *buffer);
-    of_error unpack(uint8_t *buffer);
-    virtual ExperimenterAction* clone() {
+    of_error unpack(const uint8_t* buffer);
+    virtual ExperimenterAction* clone() const {
         return new ExperimenterAction(*this);
     }
-    uint32_t experimenter() {
+    uint32_t experimenter() const {
         return this->experimenter_;
     }
     void experimenter(uint32_t experimenter) {

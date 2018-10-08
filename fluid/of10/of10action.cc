@@ -34,7 +34,7 @@ size_t OutputAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error OutputAction::unpack(uint8_t *buffer) {
+of_error OutputAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_output *oa =
         (struct of10::ofp_action_output*) buffer;
     Action::unpack(buffer);
@@ -71,7 +71,7 @@ size_t SetVLANVIDAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetVLANVIDAction::unpack(uint8_t *buffer) {
+of_error SetVLANVIDAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_vlan_vid *oa =
         (struct of10::ofp_action_vlan_vid*) buffer;
     Action::unpack(buffer);
@@ -107,7 +107,7 @@ size_t SetVLANPCPAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetVLANPCPAction::unpack(uint8_t *buffer) {
+of_error SetVLANPCPAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_vlan_pcp *oa =
         (struct of10::ofp_action_vlan_pcp*) buffer;
     Action::unpack(buffer);
@@ -123,7 +123,7 @@ size_t StripVLANAction::pack(uint8_t *buffer) {
     return Action::pack(buffer);
 }
 
-of_error StripVLANAction::unpack(uint8_t *buffer) {
+of_error StripVLANAction::unpack(const uint8_t* buffer) {
     return Action::unpack(buffer);
 }
 
@@ -155,7 +155,7 @@ size_t SetDLSrcAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetDLSrcAction::unpack(uint8_t *buffer) {
+of_error SetDLSrcAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_dl_addr *oa =
         (struct of10::ofp_action_dl_addr*) buffer;
     Action::unpack(buffer);
@@ -192,7 +192,7 @@ size_t SetDLDstAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetDLDstAction::unpack(uint8_t *buffer) {
+of_error SetDLDstAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_dl_addr *oa =
         (struct of10::ofp_action_dl_addr*) buffer;
     Action::unpack(buffer);
@@ -227,7 +227,7 @@ size_t SetNWSrcAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetNWSrcAction::unpack(uint8_t *buffer) {
+of_error SetNWSrcAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_nw_addr *act =
         (struct of10::ofp_action_nw_addr*) buffer;
     Action::unpack(buffer);
@@ -262,7 +262,7 @@ size_t SetNWDstAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetNWDstAction::unpack(uint8_t *buffer) {
+of_error SetNWDstAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_nw_addr *act =
         (struct of10::ofp_action_nw_addr*) buffer;
     Action::unpack(buffer);
@@ -298,7 +298,7 @@ size_t SetNWTOSAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetNWTOSAction::unpack(uint8_t *buffer) {
+of_error SetNWTOSAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_nw_tos *oa =
         (struct of10::ofp_action_nw_tos*) buffer;
     Action::unpack(buffer);
@@ -334,7 +334,7 @@ size_t SetTPSrcAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetTPSrcAction::unpack(uint8_t *buffer) {
+of_error SetTPSrcAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_tp_port *oa =
         (struct of10::ofp_action_tp_port*) buffer;
     Action::unpack(buffer);
@@ -370,7 +370,7 @@ size_t SetTPDstAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error SetTPDstAction::unpack(uint8_t *buffer) {
+of_error SetTPDstAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_tp_port *oa =
         (struct of10::ofp_action_tp_port*) buffer;
     Action::unpack(buffer);
@@ -408,7 +408,7 @@ size_t EnqueueAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error EnqueueAction::unpack(uint8_t *buffer) {
+of_error EnqueueAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_enqueue *oa =
         (struct of10::ofp_action_enqueue*) buffer;
     Action::unpack(buffer);
@@ -443,7 +443,7 @@ size_t VendorAction::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error VendorAction::unpack(uint8_t *buffer) {
+of_error VendorAction::unpack(const uint8_t* buffer) {
     struct of10::ofp_action_vendor_header *oa =
         (struct of10::ofp_action_vendor_header*) buffer;
     Action::unpack(buffer);

@@ -30,7 +30,7 @@ uint8_t* OFMsg::pack() {
     return buffer;
 }
 
-of_error OFMsg::unpack(uint8_t *buffer) {
+of_error OFMsg::unpack(const uint8_t* buffer) {
     struct ofp_header *oh = (struct ofp_header*) buffer;
     this->version_ = oh->version;
     this->type_ = oh->type;
@@ -59,7 +59,7 @@ uint8_t* EchoCommon::pack() {
     return buffer;
 }
 
-of_error EchoCommon::unpack(uint8_t *buffer) {
+of_error EchoCommon::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     this->data_len_ = this->length_ - sizeof(struct ofp_header);
     if (this->data_len_) {
@@ -161,7 +161,7 @@ uint8_t* ErrorCommon::pack() {
     return buffer;
 }
 
-of_error ErrorCommon::unpack(uint8_t *buffer) {
+of_error ErrorCommon::unpack(const uint8_t* buffer) {
     struct ofp_error_msg *err = (struct ofp_error_msg*) buffer;
     OFMsg::unpack(buffer);
     this->data_len_ = this->length_ - sizeof(struct ofp_error_msg);
@@ -238,7 +238,7 @@ uint8_t* SwitchConfigCommon::pack() {
     return buffer;
 }
 
-of_error SwitchConfigCommon::unpack(uint8_t *buffer) {
+of_error SwitchConfigCommon::unpack(const uint8_t* buffer) {
     struct ofp_switch_config *conf = (struct ofp_switch_config*) buffer;
     OFMsg::unpack(buffer);
     // if(this->length_ < sizeof(struct ofp_switch_config)){

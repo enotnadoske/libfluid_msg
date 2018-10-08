@@ -25,7 +25,7 @@ public:
     ~Hello() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -80,7 +80,7 @@ public:
     ~Vendor() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t vendor() {
         return this->vendor_;
     }
@@ -99,7 +99,7 @@ public:
     ~FeaturesRequest() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -121,7 +121,7 @@ public:
     ~FeaturesReply() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t actions() {
         return this->actions_;
     }
@@ -146,7 +146,7 @@ public:
     ~GetConfigRequest() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -198,7 +198,7 @@ public:
     bool operator==(const FlowMod &other) const;
     bool operator!=(const FlowMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t command(){
         return this->command_;
     }
@@ -239,7 +239,7 @@ public:
     bool operator==(const PacketOut &other) const;
     bool operator!=(const PacketOut &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t in_port() {
         return this->in_port_;
     }
@@ -263,7 +263,7 @@ public:
     bool operator==(const PacketIn &other) const;
     bool operator!=(const PacketIn &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t in_port() {
         return this->in_port_;
     }
@@ -292,7 +292,7 @@ public:
     bool operator==(const FlowRemoved &other) const;
     bool operator!=(const FlowRemoved &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of10::Match match() {
         return this->match_;
     }
@@ -315,7 +315,7 @@ public:
     bool operator==(const PortStatus &other) const;
     bool operator!=(const PortStatus &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of10::Port desc() {
         return this->desc_;
     }
@@ -339,7 +339,7 @@ public:
     bool operator==(const PortMod &other) const;
     bool operator!=(const PortMod &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }
@@ -365,7 +365,7 @@ public:
     bool operator==(const StatsRequest &other) const;
     bool operator!=(const StatsRequest &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t stats_type() {
         return this->stats_type_;
     }
@@ -397,7 +397,7 @@ public:
     bool operator==(const StatsReply &other) const;
     bool operator!=(const StatsReply &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t stats_type() {
         return this->stats_type_;
     }
@@ -422,7 +422,7 @@ public:
     ~StatsRequestDesc() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -442,7 +442,7 @@ public:
     bool operator==(const StatsReplyDesc &other) const;
     bool operator!=(const StatsReplyDesc &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     SwitchDesc desc() {
         return this->desc_;
     }
@@ -468,7 +468,7 @@ public:
     bool operator==(const StatsRequestFlow &other) const;
     bool operator!=(const StatsRequestFlow &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of10::Match match() {
         return this->match_;
     }
@@ -505,7 +505,7 @@ public:
     bool operator==(const StatsReplyFlow &other) const;
     bool operator!=(const StatsReplyFlow &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of10::FlowStats> flow_stats() {
         return this->flow_stats_;
     }
@@ -532,7 +532,7 @@ public:
     bool operator==(const StatsRequestAggregate &other) const;
     bool operator!=(const StatsRequestAggregate &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     of10::Match match() {
         return this->match_;
     }
@@ -570,7 +570,7 @@ public:
     bool operator==(const StatsReplyAggregate &other) const;
     bool operator!=(const StatsReplyAggregate &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint64_t packet_count() {
         return this->packet_count_;
     }
@@ -601,7 +601,7 @@ public:
     ~StatsRequestTable() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -620,7 +620,7 @@ public:
     bool operator==(const StatsReplyTable &other) const;
     bool operator!=(const StatsReplyTable &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of10::TableStats> table_stats() {
         return this->table_stats_;
     }
@@ -642,7 +642,7 @@ public:
     bool operator==(const StatsRequestPort &other) const;
     bool operator!=(const StatsRequestPort &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }
@@ -667,7 +667,7 @@ public:
     bool operator==(const StatsReplyPort &other) const;
     bool operator!=(const StatsReplyPort &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of10::PortStats> port_stats() {
         return this->port_stats_;
     }
@@ -691,7 +691,7 @@ public:
     bool operator==(const StatsRequestQueue &other) const;
     bool operator!=(const StatsRequestQueue &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }
@@ -722,7 +722,7 @@ public:
     bool operator==(const StatsReplyQueue &other) const;
     bool operator!=(const StatsReplyQueue &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     std::vector<of10::QueueStats> queue_stats() {
         return this->queue_stats_;
     }
@@ -745,7 +745,7 @@ public:
     bool operator==(const StatsRequestVendor &other) const;
     bool operator!=(const StatsRequestVendor &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t vendor() {
         return this->vendor_;
     }
@@ -769,7 +769,7 @@ public:
     bool operator==(const StatsReplyVendor &other) const;
     bool operator!=(const StatsReplyVendor &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint32_t vendor() {
         return this->vendor_;
     }
@@ -792,7 +792,7 @@ public:
     bool operator==(const QueueGetConfigRequest &other) const;
     bool operator!=(const QueueGetConfigRequest &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port() {
         return this->port_;
     }
@@ -818,7 +818,7 @@ public:
     bool operator==(const QueueGetConfigReply &other) const;
     bool operator!=(const QueueGetConfigReply &other) const;
     uint8_t* pack();
-    of_error unpack(uint8_t *buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port() {
         return this->port_;
     }
@@ -843,7 +843,7 @@ public:
     ~BarrierRequest() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /**
@@ -855,7 +855,7 @@ public:
     ~BarrierReply() {
     }
     uint8_t* pack();
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 } //end of namespace of10

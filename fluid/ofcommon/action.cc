@@ -32,7 +32,7 @@ size_t Action::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error Action::unpack(uint8_t *buffer) {
+of_error Action::unpack(const uint8_t* buffer) {
     struct ofp_action_header *ac = (struct ofp_action_header *) buffer;
     this->type_ = ntoh16(ac->type);
     this->length_ = ntoh16(ac->len);
@@ -84,8 +84,8 @@ size_t ActionList::pack(uint8_t *buffer) {
     return 0;
 }
 
-of_error ActionList::unpack10(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionList::unpack10(const uint8_t* buffer) {
+    const uint8_t* p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {
@@ -99,8 +99,8 @@ of_error ActionList::unpack10(uint8_t *buffer) {
     return 0;
 }
 
-of_error ActionList::unpack13(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionList::unpack13(const uint8_t* buffer) {
+    const uint8_t* p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {
@@ -186,8 +186,8 @@ size_t ActionSet::pack(uint8_t *buffer) {
 /*OpenFlow 1.0 doesn't have actions sets, so we do not
  * need to implement two unpack versions like we did for
  * the ActionList */
-of_error ActionSet::unpack(uint8_t *buffer) {
-    uint8_t *p = buffer;
+of_error ActionSet::unpack(const uint8_t* buffer) {
+    const uint8_t *p = buffer;
     size_t len = this->length_;
     Action *act;
     while (len) {
@@ -212,15 +212,20 @@ void swap(ActionSet& first, ActionSet& second) {
     std::swap(first.action_set_, second.action_set_);
 }
 
-void ActionSet::add_action(Action &act) {
+bool ActionSet::add_action(Action &act) {
     Action *actn = act.clone();
-    this->action_set_.insert(actn);
-    this->length_ += act.length();
+    return this->add_action(actn);
 }
 
-void ActionSet::add_action(Action *act) {
-    this->action_set_.insert(act);
-    this->length_ += act->length();
+bool ActionSet::add_action(Action *act) {
+    // Set items are unique.  Only update length if
+    // actually inserted.
+    bool added = this->action_set_.insert(act).second;
+    if (added) {
+	this->length_ += act->length();
+    }
+
+    return added;
 }
 
 } //End of namespace fluid_msg

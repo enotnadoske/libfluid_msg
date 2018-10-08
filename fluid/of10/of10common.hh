@@ -28,7 +28,7 @@ public:
     bool operator==(const Port &other) const;
     bool operator!=(const Port &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     void port_no(uint16_t port_no) {
         this->port_no_ = port_no;
     }
@@ -50,7 +50,7 @@ public:
         return new QueuePropMinRate(*this);
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 /* Queue description*/
@@ -63,7 +63,7 @@ public:
     ~PacketQueue() {
     }
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
 };
 
 class FlowStats: public FlowStatsCommon {
@@ -86,7 +86,7 @@ public:
     bool operator==(const FlowStats &other) const;
     bool operator!=(const FlowStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     of10::Match match() {
         return this->match_;
     }
@@ -120,7 +120,7 @@ public:
     bool operator==(const TableStats &other) const;
     bool operator!=(const TableStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     std::string name() {
         return this->name_;
     }
@@ -156,7 +156,7 @@ public:
     bool operator==(const PortStats &other) const;
     bool operator!=(const PortStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }
@@ -180,7 +180,7 @@ public:
     bool operator==(const QueueStats &other) const;
     bool operator!=(const QueueStats &other) const;
     size_t pack(uint8_t* buffer);
-    of_error unpack(uint8_t* buffer);
+    of_error unpack(const uint8_t* buffer);
     uint16_t port_no() {
         return this->port_no_;
     }

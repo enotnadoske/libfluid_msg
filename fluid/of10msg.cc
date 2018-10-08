@@ -16,7 +16,7 @@ uint8_t* Hello::pack() {
     return OFMsg::pack();
 }
 
-of_error Hello::unpack(uint8_t *buffer) {
+of_error Hello::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of10::OFPET_BAD_REQUEST, OFPBRC_BAD_LEN);
@@ -66,7 +66,7 @@ uint8_t* Vendor::pack() {
     return buffer;
 }
 
-of_error Vendor::unpack(uint8_t *buffer) {
+of_error Vendor::unpack(const uint8_t* buffer) {
     struct of10::ofp_vendor_header* v = (struct of10::ofp_vendor_header*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct of10::ofp_vendor_header)) {
@@ -88,7 +88,7 @@ uint8_t* FeaturesRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error FeaturesRequest::unpack(uint8_t *buffer) {
+of_error FeaturesRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of10::OFPET_BAD_REQUEST, OFPBRC_BAD_LEN);
@@ -149,7 +149,7 @@ uint8_t* FeaturesReply::pack() {
     return buffer;
 }
 
-of_error FeaturesReply::unpack(uint8_t *buffer) {
+of_error FeaturesReply::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     struct of10::ofp_switch_features *fr =
         (struct of10::ofp_switch_features*) buffer;
@@ -159,7 +159,7 @@ of_error FeaturesReply::unpack(uint8_t *buffer) {
     this->capabilities_ = ntoh32(fr->capabilities);
     this->actions_ = ntoh32(fr->actions);
     size_t len = this->length_ - sizeof(struct of10::ofp_switch_features);
-    uint8_t *p = buffer + sizeof(struct of10::ofp_switch_features);
+    const uint8_t* p = buffer + sizeof(struct of10::ofp_switch_features);
     while (len) {
         of10::Port port;
         port.unpack(p);
@@ -196,7 +196,7 @@ uint8_t* GetConfigRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error GetConfigRequest::unpack(uint8_t *buffer) {
+of_error GetConfigRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of10::OFPET_BAD_REQUEST, OFPBRC_BAD_LEN);
@@ -292,7 +292,7 @@ uint8_t* FlowMod::pack() {
     return buffer;
 }
 
-of_error FlowMod::unpack(uint8_t *buffer) {
+of_error FlowMod::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     struct of10::ofp_flow_mod *fm = (struct of10::ofp_flow_mod*) buffer;
     if (fm->header.length < sizeof(struct of10::ofp_flow_mod)) {
@@ -365,7 +365,7 @@ uint8_t* PacketOut::pack() {
     return buffer;
 }
 
-of_error PacketOut::unpack(uint8_t *buffer) {
+of_error PacketOut::unpack(const uint8_t* buffer) {
     struct of10::ofp_packet_out *po = (struct of10::ofp_packet_out*) buffer;
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct of10::ofp_packet_out)) {
@@ -375,7 +375,7 @@ of_error PacketOut::unpack(uint8_t *buffer) {
     this->in_port_ = ntoh16(po->in_port);
     this->actions_len_ = ntoh16(po->actions_len);
     this->actions_.length(this->actions_len_);
-    uint8_t * p = buffer + sizeof(struct of10::ofp_packet_out);
+    const uint8_t* p = buffer + sizeof(struct of10::ofp_packet_out);
     this->actions_.unpack10(p);
     this->data_len_ = this->length_
         - (sizeof(struct of10::ofp_packet_out) + this->actions_len_);
@@ -427,7 +427,7 @@ uint8_t* PacketIn::pack() {
     return buffer;
 }
 
-of_error PacketIn::unpack(uint8_t *buffer) {
+of_error PacketIn::unpack(const uint8_t* buffer) {
     struct of10::ofp_packet_in *pi = (struct of10::ofp_packet_in*) buffer;
     OFMsg::unpack(buffer);
     this->buffer_id_ = ntoh32(pi->buffer_id);
@@ -493,7 +493,7 @@ uint8_t* FlowRemoved::pack() {
     return buffer;
 }
 
-of_error FlowRemoved::unpack(uint8_t *buffer) {
+of_error FlowRemoved::unpack(const uint8_t* buffer) {
     struct of10::ofp_flow_removed *fr = (struct of10::ofp_flow_removed*) buffer;
     OFMsg::unpack(buffer);
     this->match_.unpack(buffer + sizeof(struct ofp_header));
@@ -537,7 +537,7 @@ uint8_t* PortStatus::pack() {
     return buffer;
 }
 
-of_error PortStatus::unpack(uint8_t *buffer) {
+of_error PortStatus::unpack(const uint8_t* buffer) {
     struct of10::ofp_port_status *ps = (struct of10::ofp_port_status *) buffer;
     OFMsg::unpack(buffer);
     this->reason_ = ps->reason;
@@ -581,7 +581,7 @@ uint8_t* PortMod::pack() {
     return buffer;
 }
 
-of_error PortMod::unpack(uint8_t* buffer) {
+of_error PortMod::unpack(const uint8_t* buffer) {
     struct of10::ofp_port_mod *pm = (struct of10::ofp_port_mod *) buffer;
     if (pm->header.length < sizeof(struct of10::ofp_port_mod)) {
         return openflow_error(of10::OFPET_BAD_REQUEST, OFPBRC_BAD_LEN);
@@ -636,7 +636,7 @@ uint8_t* StatsRequest::pack() {
     return buffer;
 }
 
-of_error StatsRequest::unpack(uint8_t *buffer) {
+of_error StatsRequest::unpack(const uint8_t* buffer) {
     struct of10::ofp_stats_request * sr =
         (struct of10::ofp_stats_request *) buffer;
     OFMsg::unpack(buffer);
@@ -687,7 +687,7 @@ uint8_t* StatsReply::pack() {
     return buffer;
 }
 
-of_error StatsReply::unpack(uint8_t *buffer) {
+of_error StatsReply::unpack(const uint8_t* buffer) {
     struct of10::ofp_stats_reply * sr = (struct of10::ofp_stats_reply *) buffer;
     OFMsg::unpack(buffer);
     this->stats_type_ = ntoh16(sr->type);
@@ -708,7 +708,7 @@ uint8_t* StatsRequestDesc::pack() {
     return buffer;
 }
 
-of_error StatsRequestDesc::unpack(uint8_t *buffer) {
+of_error StatsRequestDesc::unpack(const uint8_t* buffer) {
     return StatsRequest::unpack(buffer);
 }
 
@@ -745,7 +745,7 @@ uint8_t* StatsReplyDesc::pack() {
     return buffer;
 }
 
-of_error StatsReplyDesc::unpack(uint8_t *buffer) {
+of_error StatsReplyDesc::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     return this->desc_.unpack(buffer + sizeof(struct of10::ofp_stats_reply));
 }
@@ -800,7 +800,7 @@ uint8_t* StatsRequestFlow::pack() {
     return buffer;
 }
 
-of_error StatsRequestFlow::unpack(uint8_t *buffer) {
+of_error StatsRequestFlow::unpack(const uint8_t* buffer) {
     struct of10::ofp_flow_stats_request *fs =
         (struct of10::ofp_flow_stats_request*) (buffer
             + sizeof(struct of10::ofp_stats_request));
@@ -848,10 +848,10 @@ uint8_t* StatsReplyFlow::pack() {
     return buffer;
 }
 
-of_error StatsReplyFlow::unpack(uint8_t *buffer) {
+of_error StatsReplyFlow::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     size_t len = this->length_ - sizeof(struct ofp_stats_reply);
-    uint8_t *p = buffer + sizeof(struct ofp_stats_reply);
+    const uint8_t* p = buffer + sizeof(struct ofp_stats_reply);
     while (len) {
         FlowStats stat;
         stat.unpack(p);
@@ -917,7 +917,7 @@ uint8_t* StatsRequestAggregate::pack() {
     return buffer;
 }
 
-of_error StatsRequestAggregate::unpack(uint8_t *buffer) {
+of_error StatsRequestAggregate::unpack(const uint8_t* buffer) {
     struct of10::ofp_aggregate_stats_request *fs =
         (struct of10::ofp_aggregate_stats_request*) (buffer
             + sizeof(struct of10::ofp_stats_request));
@@ -969,7 +969,7 @@ uint8_t* StatsReplyAggregate::pack() {
     return buffer;
 }
 
-of_error StatsReplyAggregate::unpack(uint8_t *buffer) {
+of_error StatsReplyAggregate::unpack(const uint8_t* buffer) {
     struct of10::ofp_aggregate_stats_reply *ar =
         (struct of10::ofp_aggregate_stats_reply*) (buffer
             + sizeof(struct of10::ofp_stats_reply));
@@ -993,7 +993,7 @@ uint8_t* StatsRequestTable::pack() {
     return buffer;
 }
 
-of_error StatsRequestTable::unpack(uint8_t *buffer) {
+of_error StatsRequestTable::unpack(const uint8_t* buffer) {
     return StatsRequest::unpack(buffer);
 }
 
@@ -1032,10 +1032,10 @@ uint8_t* StatsReplyTable::pack() {
     return buffer;
 }
 
-of_error StatsReplyTable::unpack(uint8_t *buffer) {
+of_error StatsReplyTable::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     uint8_t len = this->length_ - sizeof(struct ofp_stats_reply);
-    uint8_t *p = buffer + sizeof(struct ofp_stats_reply);
+    const uint8_t* p = buffer + sizeof(struct ofp_stats_reply);
     while (len) {
         TableStats stat;
         stat.unpack(p);
@@ -1088,7 +1088,7 @@ uint8_t* StatsRequestPort::pack() {
     return buffer;
 }
 
-of_error StatsRequestPort::unpack(uint8_t *buffer) {
+of_error StatsRequestPort::unpack(const uint8_t* buffer) {
     struct of10::ofp_port_stats_request *ps =
         (struct of10::ofp_port_stats_request *) (buffer
             + sizeof(struct of10::ofp_stats_request));
@@ -1136,10 +1136,10 @@ uint8_t* StatsReplyPort::pack() {
     return buffer;
 }
 
-of_error StatsReplyPort::unpack(uint8_t *buffer) {
+of_error StatsReplyPort::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     uint8_t len = this->length_ - sizeof(struct ofp_stats_reply);
-    uint8_t *p = buffer + sizeof(struct ofp_stats_request);
+    const uint8_t* p = buffer + sizeof(struct ofp_stats_request);
     while (len) {
         of10::PortStats stat;
         stat.unpack(p);
@@ -1194,7 +1194,7 @@ uint8_t* StatsRequestQueue::pack() {
     return buffer;
 }
 
-of_error StatsRequestQueue::unpack(uint8_t *buffer) {
+of_error StatsRequestQueue::unpack(const uint8_t* buffer) {
     struct of10::ofp_queue_stats_request* qs =
         (of10::ofp_queue_stats_request*) (buffer
             + sizeof(of10::ofp_stats_request));
@@ -1243,10 +1243,10 @@ uint8_t* StatsReplyQueue::pack() {
     return buffer;
 }
 
-of_error StatsReplyQueue::unpack(uint8_t *buffer) {
+of_error StatsReplyQueue::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     uint8_t len = this->length_ - sizeof(struct ofp_stats_reply);
-    uint8_t *p = buffer + sizeof(struct ofp_stats_reply);
+    const uint8_t* p = buffer + sizeof(struct ofp_stats_reply);
     while (len) {
         of10::QueueStats stat;
         stat.unpack(p);
@@ -1296,7 +1296,7 @@ uint8_t* StatsRequestVendor::pack() {
     return buffer;
 }
 
-of_error StatsRequestVendor::unpack(uint8_t *buffer) {
+of_error StatsRequestVendor::unpack(const uint8_t* buffer) {
     StatsRequest::unpack(buffer);
     uint32_t vendor;
     memcpy(&vendor, buffer + sizeof(struct of10::ofp_stats_request),
@@ -1333,7 +1333,7 @@ uint8_t* StatsReplyVendor::pack() {
     return buffer;
 }
 
-of_error StatsReplyVendor::unpack(uint8_t *buffer) {
+of_error StatsReplyVendor::unpack(const uint8_t* buffer) {
     StatsReply::unpack(buffer);
     uint32_t vendor;
     memcpy(&vendor, buffer + sizeof(struct of10::ofp_stats_reply),
@@ -1372,7 +1372,7 @@ uint8_t* QueueGetConfigRequest::pack() {
     return buffer;
 }
 
-of_error QueueGetConfigRequest::unpack(uint8_t *buffer) {
+of_error QueueGetConfigRequest::unpack(const uint8_t* buffer) {
     struct of10::ofp_queue_get_config_request * qc =
         (struct of10::ofp_queue_get_config_request*) buffer;
     OFMsg::unpack(buffer);
@@ -1427,12 +1427,12 @@ uint8_t* QueueGetConfigReply::pack() {
     return buffer;
 }
 
-of_error QueueGetConfigReply::unpack(uint8_t *buffer) {
+of_error QueueGetConfigReply::unpack(const uint8_t* buffer) {
     struct of10::ofp_queue_get_config_reply *qr =
         (struct of10::ofp_queue_get_config_reply *) buffer;
     OFMsg::unpack(buffer);
     this->port_ = ntoh16(qr->port);
-    uint8_t *p = buffer + sizeof(struct of10::ofp_queue_get_config_reply);
+    const uint8_t* p = buffer + sizeof(struct of10::ofp_queue_get_config_reply);
     size_t len = this->length_
         - sizeof(struct of10::ofp_queue_get_config_reply);
     while (len) {
@@ -1476,7 +1476,7 @@ uint8_t* BarrierRequest::pack() {
     return OFMsg::pack();
 }
 
-of_error BarrierRequest::unpack(uint8_t *buffer) {
+of_error BarrierRequest::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     if (this->length_ < sizeof(struct ofp_header)) {
         return openflow_error(of10::OFPET_BAD_REQUEST, of10::OFPBRC_BAD_LEN);
@@ -1497,7 +1497,7 @@ uint8_t* BarrierReply::pack() {
 
 }
 
-of_error BarrierReply::unpack(uint8_t *buffer) {
+of_error BarrierReply::unpack(const uint8_t* buffer) {
     OFMsg::unpack(buffer);
     return 0;
 }

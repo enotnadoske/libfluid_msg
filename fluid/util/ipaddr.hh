@@ -8,9 +8,9 @@
 #include <sstream>
 #include <string>
 
-namespace fluid_msg{
+namespace fluid_msg {
 
-enum {NONE = 0, IPV4 = 4, IPV6 = 6 };
+enum {NONE = 0, IPV4 = 4, IPV6 = 6};
 
 class IPAddress {
     public:
@@ -29,8 +29,8 @@ class IPAddress {
         int get_version() const;
         void setIPv4(uint32_t address);
         void setIPv6(uint8_t address[16]);
-        uint32_t getIPv4();
-        uint8_t * getIPv6();
+        uint32_t getIPv4() const;
+        const uint8_t *getIPv6() const;
         static uint32_t IPv4from_string(const std::string &address);
         static struct in6_addr IPv6from_string(const std::string &address);
 
