@@ -29,7 +29,7 @@ public:
     }
     virtual size_t pack(uint8_t* buffer);
     virtual of_error unpack(const uint8_t* buffer);
-    uint16_t type() {
+    uint16_t type() const {
         return this->type_;
     }
     uint16_t length() const {

@@ -300,7 +300,7 @@ public:
         this->buffer_id_ = buffer_id;
     }
     void actions_len(uint16_t len) {
-        actions_len_ = len;
+        this->actions_len_ = len;
     }
     void actions(ActionList actions);
     void add_action(Action &action);

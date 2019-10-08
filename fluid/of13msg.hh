@@ -350,7 +350,7 @@ public:
     uint64_t cookie_mask() const {
         return this->cookie_mask_;
     }
-    uint8_t table_id() const{
+    uint8_t table_id() const {
         return this->table_id_;
     }
     uint32_t out_port() const {
