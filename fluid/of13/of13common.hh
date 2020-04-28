@@ -210,6 +210,9 @@ public:
     ActionSet& get_actions() {
         return this->actions_;
     }
+    ActionSet get_actions() const{
+        return this->actions_;
+    }
     void weight(uint16_t weight) {
         this->weight_ = weight;
     }
